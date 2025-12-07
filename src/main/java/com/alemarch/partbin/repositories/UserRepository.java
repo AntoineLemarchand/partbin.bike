@@ -3,9 +3,7 @@ package com.alemarch.partbin.repositories;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import com.alemarch.partbin.dtos.UserSummary;
 import com.alemarch.partbin.entities.User;
 
 import java.util.List;
@@ -18,7 +16,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@EntityGraph(attributePaths = "addresses")
 	@Query("select u from User u")
 	List<User> findAllWithTags();
-
-	@Query("select u.id as id, u.email as email from User u where u.profile.loyaltyPoints > :loyaltyPoints order by u.email")
-	List<UserSummary> findLoyalUsers(@Param("loyaltyPoints") int loyaltyPoints);
 }
