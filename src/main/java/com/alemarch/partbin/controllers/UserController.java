@@ -1,5 +1,6 @@
 package com.alemarch.partbin.controllers;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class UserController {
 
 	@GetMapping
 	public Iterable<UserDto> getAllUsers( @RequestParam String sort) {
-		return userRepository.findAll()
+		return userRepository.findAll(Sort.by(sort))
 			.stream()
 			.map(userMapper::toDto)
 			.toList();
