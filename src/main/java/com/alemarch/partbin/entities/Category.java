@@ -14,22 +14,22 @@ import java.util.Set;
 @Entity
 @Table(name = "categories")
 public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Byte id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Byte id;
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @OneToMany(mappedBy = "category")
-    private Set<Product> products = new HashSet<>();
+	@OneToMany(mappedBy = "category")
+	private Set<Product> products = new HashSet<>();
 
-    public Category(String name) {
-        this.name = name;
-    }
+	public Category(String name) {
+		this.name = name;
+	}
 
-    public Category(byte id) {
-        this.id = id;
-    }
+	public Category(byte id) {
+		this.id = id;
+	}
 }

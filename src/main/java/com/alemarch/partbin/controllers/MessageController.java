@@ -7,8 +7,8 @@ import com.alemarch.partbin.entities.Message;
 
 @RestController
 public class MessageController {
-  @RequestMapping("/hello")
-  public Message sayHello() {
-    return new Message("Hello World!");
-  }
+	@RequestMapping("/hello")
+	public Message sayHello() {
+		return new Message("Hello World!");
+	}
 }
