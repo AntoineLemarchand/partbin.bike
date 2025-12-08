@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Caesar Dressing";
+  src: url("../fonts/Caesar_Dressing/CaesarDressing-Regular.ttf");
+}
+
+@font-face {
+  font-family: "TASA Orbiter";
+  src: url("../fonts/TASA_Orbiter/TASAOrbiter-VariableFont_wght.ttf");
+}
+
+:root {
+  --font-title: "Caesar Dressing";
+  --font-subtitle: "TASA Orbiter";
+  --font-content: "TASA Orbiter";
+}

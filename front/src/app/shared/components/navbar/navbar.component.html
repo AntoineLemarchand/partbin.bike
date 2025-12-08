@@ -1,0 +1,14 @@
+<nav>
+  <h1>{{name}}</h1>
+  <h2>
+    SEARCHBAR
+  </h2>
+  <div>
+    @if(isConnected) {
+      <a href="#"><ng-icon name="matPersonOutline" /></a>
+    } @else {
+      <a href="#"><ng-icon name="matLoginOutline" /></a>
+    }
+    <a href="#"><ng-icon name="matShoppingBasketOutline" /></a>
+  </div>
+</nav>

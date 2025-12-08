@@ -1,0 +1,25 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  height: 2rem;
+  background-color: var(--primary);
+  color: white;
+}
+
+h1 {
+  font-size: 1.2rem;
+  font-family: var(--font-title);
+}
+
+nav > div {
+  display: flex;
+  gap: .5rem;
+}
+
+ng-icon {
+  font-size: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}

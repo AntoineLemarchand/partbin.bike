@@ -42,7 +42,15 @@ public class User implements UserDetails {
 	joinColumns = @JoinColumn(name = "user_id"),
 	inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
-	private Set<Product> favoriteProducts = new HashSet<>();
+	private final Set<Product> favoriteProducts = new HashSet<>();
+
+	@ManyToMany
+	@JoinTable(
+	name = "owners",
+	joinColumns = @JoinColumn(name = "user_id"),
+	inverseJoinColumns = @JoinColumn(name = "product_id")
+	)
+	private final Set<Product> ownedProducts = new HashSet<>();
 
 	public void addFavoriteProduct(Product product) {
 		favoriteProducts.add(product);

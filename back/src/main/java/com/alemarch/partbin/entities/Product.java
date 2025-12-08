@@ -3,8 +3,6 @@ package com.alemarch.partbin.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Builder
@@ -23,9 +21,6 @@ public class Product {
 
 	@Column(name = "description")
 	private String description;
-
-	@Column(name = "price")
-	private BigDecimal price;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category_id")
