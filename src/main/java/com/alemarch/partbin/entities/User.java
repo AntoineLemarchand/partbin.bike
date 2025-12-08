@@ -3,10 +3,12 @@ package com.alemarch.partbin.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Setter
 @Getter
@@ -15,49 +17,24 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "username")
+	private String username;
 
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	private String email;
 
 	@Column(name = "password")
 	private String password;
 
-	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-	@Builder.Default
-	private List<Address> addresses = new ArrayList<>();
+	@Column(name = "authorities")
+	List<? extends GrantedAuthority> authorities;
 
-	public void addAddress(Address address) {
-		addresses.add(address);
-		address.setUser(this);
-	}
-
-	public void removeAddress(Address address) {
-		addresses.remove(address);
-		address.setUser(null);
-	}
-
-	public void addTag(String tagName) {
-		var tag = new Tag(tagName);
-		tags.add(tag);
-		tag.getUsers().add(this);
-	}
-
-	@ManyToMany
-	@JoinTable(
-	name = "user_tags",
-	joinColumns = @JoinColumn(name = "user_id"),
-	inverseJoinColumns = @JoinColumn(name = "tag_id")
-	)
-	@Builder.Default
-	private Set<Tag> tags = new HashSet<>();
 
 	@ManyToMany
 	@JoinTable(
@@ -75,7 +52,7 @@ public class User {
 	public String toString() {
 		return getClass().getSimpleName() + "(" +
 			"id = " + id + ", " +
-			"name = " + name + ", " +
+			"name = " + username + ", " +
 			"email = " + email + ")";
 	}
 }

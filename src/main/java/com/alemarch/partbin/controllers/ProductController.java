@@ -20,7 +20,7 @@ public class ProductController {
 
 	@GetMapping
 	public Iterable<ProductDto> getProducts(
-			@RequestParam(required = false, name = "categoryId") Long categoryId
+			@RequestParam(required = false, name = "categoryId") Byte categoryId
 	) {
 		var products = (categoryId != null ?
 			productRepository.findByCategory(categoryId) : 

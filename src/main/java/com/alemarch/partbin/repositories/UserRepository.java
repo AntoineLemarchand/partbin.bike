@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-	@EntityGraph(attributePaths = {"tags", "addresses"})
+	@EntityGraph(attributePaths = {"addresses"})
 	Optional<User> findByEmail(String email);
 
 	@EntityGraph(attributePaths = "addresses")
 	@Query("select u from User u")
-	List<User> findAllWithTags();
+	List<User> findAll();
 }

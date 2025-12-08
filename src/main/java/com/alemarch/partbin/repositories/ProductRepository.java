@@ -10,5 +10,5 @@ import com.alemarch.partbin.entities.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	@EntityGraph(attributePaths = "category")
 	@Query("select p from Product p where p.category.id = :id")
-	List<Product> findByCategory(Long id);
+	List<Product> findByCategory(Byte id);
 }
