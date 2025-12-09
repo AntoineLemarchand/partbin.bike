@@ -1,48 +1,58 @@
 package com.alemarch.partbin.controllers;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alemarch.partbin.entities.User;
+
 import com.alemarch.partbin.dtos.UserDto;
+import com.alemarch.partbin.dtos.ProductDto;
+import com.alemarch.partbin.dtos.SortParam;
 import com.alemarch.partbin.mappers.UserMapper;
 import com.alemarch.partbin.repositories.UserRepository;
+import com.alemarch.partbin.services.UserService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-	private final UserRepository userRepository;
-	private final UserMapper userMapper;
+	private final UserService userService;
 
+	// TODO restrict this to admin role
 	@GetMapping
-	public Iterable<UserDto> getAllUsers(
-			@RequestParam(required = false, defaultValue = "", name = "sort") String sort
+	public ResponseEntity<Iterable<UserDto>> getUsers(
+			@RequestParam(required = false, name = "filter") Map<String, Object> filter,
+			@RequestParam(required = false, name = "filter") SortParam sort
 	) {
-		if (!Set.of("name", "email").contains(sort)) {
-			sort = "name";
-		}
-		return userRepository.findAll(Sort.by(sort))
-			.stream()
-			.map(userMapper::toDto)
-			.toList();
+		return ResponseEntity.ok(userService.getUsers(filter, sort));
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-		var user = userRepository.findById(id).orElse(null);
-		if (user == null) {
+	@GetMapping("/wishlist")
+	public ResponseEntity<Iterable<ProductDto>> getWishlist(Authentication authentication) {
+		return ResponseEntity.ok(userService.getWishlist((User)authentication.getPrincipal()));
+	}
+
+	@PostMapping("/wishlist")
+	public ResponseEntity<String> addToWishlist(Authentication authentication, @RequestBody long productId) {
+		User user = (User) authentication.getPrincipal();
+		boolean inserted = userService.addToWishlist(user, productId);
+		if (!inserted) {
 			return ResponseEntity.notFound().build();
 		}
-
-		return ResponseEntity.ok(userMapper.toDto(user));
+		return ResponseEntity.ok().build();
 	}
 }

@@ -1,5 +1,6 @@
 form {
   width: max-content;
+  max-width: 15rem;
 }
 
 form {
@@ -24,6 +25,12 @@ input[type="text"], input[type="password"] {
   background-color: color-mix(in srgb, gray, transparent 80%);
 }
 
+input ~ div {
+  font-size: .8rem;
+  color: salmon;
+  text-align: left;
+}
+
 button[type="submit"], a#create-account-link {
   background-color: color-mix(in srgb, var(--primary), transparent 20%);
   color: white;
@@ -41,7 +48,8 @@ button[type="submit"]:hover, a#create-account-link:hover {
 
 a#forgot-password-link {
   color: rgb(0 0 0 / 50%);
-  widht: max-content;
+  width: max-content;
+  margin-inline: auto;
 }
 
 a#forgot-password-link:hover {

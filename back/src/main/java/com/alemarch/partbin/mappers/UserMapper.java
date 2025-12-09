@@ -7,6 +7,5 @@ import com.alemarch.partbin.entities.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
 	UserDto toDto(User user);
 }

@@ -21,10 +21,11 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		String[] publicRoutes = {
-			"/auth/**",
-			"/doc",
-			"/swagger-ui/**",
-			"/v3/api-docs/**"
+			"/**"
+			//"/auth/**",
+			//"/doc",
+			//"/swagger-ui/**",
+			//"/v3/api-docs/**"
 		};
 
 		return http

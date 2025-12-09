@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alemarch.partbin.dtos.SignupRequest;
 import com.alemarch.partbin.dtos.LoginRequest;
 import com.alemarch.partbin.repositories.UserRepository;
+import com.alemarch.partbin.services.JwtService;
 import com.alemarch.partbin.entities.User;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -34,17 +37,24 @@ public class AuthenticationController {
 	private final LogoutHandler logoutHandler;
 
 	private final AuthenticationManager authenticationManager;
+	private final JwtService jwtService;
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
 		Authentication authenticationRequest =
 			UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getEmail(), loginRequest.getPassword());
 		Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequest);
 
 		SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
-
 		HttpSession session = request.getSession();
 		session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+		String token = jwtService.generateToken((UserDetails)authenticationResponse.getPrincipal());
+		Cookie sessionID = new Cookie("partbin_sid", token);
+		sessionID.setHttpOnly(true);
+		sessionID.setPath("/");
+		response.addCookie(sessionID);
+
 		return new ResponseEntity<>("User signed in successfully!", HttpStatus.OK);
 	}
 

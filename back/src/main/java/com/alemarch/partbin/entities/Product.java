@@ -25,4 +25,8 @@ public class Product {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category_id")
 	private Category category;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "owner_id")
+	private User owner;
 }
