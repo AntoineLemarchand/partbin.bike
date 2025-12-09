@@ -6,3 +6,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
       dialect: org.hibernate.dialec.H2Dialect
+security:
+  jwt:
+    secret-key: HjEvDcEGI1xXXrjBUZnYt2M9akaKfpX9G17sDhJUGps=
+    expiration-time: 86400000
