@@ -14,5 +14,5 @@ import { matLoginOutline, matShoppingBasketOutline } from "@ng-icons/material-ic
 
 export class NavbarComponent {
   name = "partbin.bike";
-  isConnected = true;
+  isConnected = false;
 }

@@ -1,0 +1,21 @@
+<form [formGroup]="loginForm" (ngSubmit="onSubmit()")>
+    <div class="field">
+      <input id="email" type="text" placeholder="email" formControlName="email" />
+    </div>
+
+    <div class="field">
+      <input id="password" type="password" placeholder="password" formControlName="email" />
+    </div>
+
+    <div>
+      <button type="submit">Login</button>
+      <a href="#" id="forgot-password-link">Forgot password ?</a>
+    </div>
+
+    <hr />
+
+    <div>
+      <span>Don't have an account ?</span>
+      <a href="/auth/signup" id="create-account-link">Create account</a>
+    </div>
+</form>
