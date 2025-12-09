@@ -33,3 +33,4 @@
 /.vscode/
 
 application-local.yaml
+.env
