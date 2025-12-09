@@ -19,11 +19,18 @@ public class SecurityConfiguration {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		String[] publicRoutes = {
+			"/auth/**",
+			"/doc",
+			"/swagger-ui/**",
+			"/v3/api-docs/**"
+		};
+
 		return http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth ->
-					auth.requestMatchers("/auth/**").permitAll()
+					auth.requestMatchers(publicRoutes).permitAll()
 					.anyRequest().authenticated())
 			.sessionManagement(session -> session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
