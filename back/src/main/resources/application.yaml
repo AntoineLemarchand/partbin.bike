@@ -2,9 +2,9 @@ spring:
   application:
     name: partbin
   datasource:
-    url: jdbc:postgresql://localhost:5432/partbin
-    username: postgres
-    password: 1234
+    url: jdbc:${DATABASE_URL} # Example: jdbc:postgresql://localhost:5432/partbin
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,7 +15,7 @@ spring:
           dialect: org.hibernate.dialect.PostgreSQLDialect
 security:
   jwt:
-    secret-key: HjEvDcEGI1xXXrjBUZnYt2M9akaKfpX9G17sDhJUGps=
+    secret-key: ${JWT_SECRET_KEY}
     expiration-time: 86400000
 springdoc:
   swagger-ui:
