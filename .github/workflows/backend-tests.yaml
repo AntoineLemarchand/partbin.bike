@@ -1,0 +1,23 @@
+name: Java Tests
+ 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+ 
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+ 
+      - run: mvn install
+        working-directory: back
+      - run: mvn test
+        working-directory: back
