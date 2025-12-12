@@ -23,6 +23,7 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
 			case AccessDeniedException e -> createProblemDetail(403, e.getMessage(), "You are not authorized to access this resource");
 			case SignatureException e -> createProblemDetail(403, e.getMessage(), "The JWT signature is invalid");
 			case ExpiredJwtException e -> createProblemDetail(403, e.getMessage(), "The JWT token has expired");
+			case IllegalArgumentException e -> createProblemDetail(400, e.getMessage(), "Illegal or invalid argument");
 			default -> createProblemDetail(500, exception.getMessage(), "Unknown internal server error.");
 		};
 	}

@@ -17,8 +17,7 @@ import com.alemarch.partbin.entities.User;
 import com.alemarch.partbin.dtos.UserDto;
 import com.alemarch.partbin.dtos.ProductDto;
 import com.alemarch.partbin.dtos.SortParam;
-import com.alemarch.partbin.mappers.UserMapper;
-import com.alemarch.partbin.repositories.UserRepository;
+import com.alemarch.partbin.dtos.UpdateUserRequest;
 import com.alemarch.partbin.services.UserService;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 	private final UserService userService;
 
@@ -39,6 +38,12 @@ public class UserController {
 			@RequestParam(required = false, name = "filter") SortParam sort
 	) {
 		return ResponseEntity.ok(userService.getUsers(filter, sort));
+	}
+
+	@PostMapping
+	public ResponseEntity<UserDto> updateUser(Authentication authentication, @RequestBody UpdateUserRequest newValues) {
+		User user = (User) authentication.getPrincipal();
+		return ResponseEntity.ok(userService.updateUser(user, newValues));
 	}
 
 	@GetMapping("/wishlist")

@@ -2,7 +2,6 @@ package com.alemarch.partbin.controllers;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alemarch.partbin.dtos.SignupRequest;
-import com.alemarch.partbin.dtos.UserDto;
 import com.alemarch.partbin.dtos.LoginRequest;
 import com.alemarch.partbin.repositories.UserRepository;
 import com.alemarch.partbin.services.JwtService;
@@ -33,7 +31,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

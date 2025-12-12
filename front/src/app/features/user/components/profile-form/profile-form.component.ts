@@ -1,6 +1,7 @@
-import { Component, Input, SimpleChange } from "@angular/core";
+import { Component, inject, Input, SimpleChange } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { UserDto } from "../../../../shared/models/UserDto";
+import { UserService } from "../../services/user-service";
 
 @Component({
   selector: 'app-profile-form',
@@ -12,6 +13,7 @@ import { UserDto } from "../../../../shared/models/UserDto";
 export class ProfileForm {
   @Input() user: UserDto | null = null;
 
+  userService = inject(UserService)
 
   profileForm = new FormGroup({
     email: new FormControl(this.user?.email ?? '', [Validators.email]),
@@ -29,4 +31,27 @@ export class ProfileForm {
 
   get email() {return this.profileForm.get("email") }
   get username() {return this.profileForm.get("username") }
+
+  submitted = false;
+  errorMessage: string | null = null
+  successMessage: string | null = null
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.profileForm.valid) {
+      this.errorMessage = null;
+      this.successMessage = null;
+
+      this.userService.updateUser(this.profileForm.value)
+      .subscribe({
+        next: () => {
+            this.successMessage = "Profile Successfully updated"
+        },
+        error: () => {
+          this.errorMessage = "Username or password invalid. Please try again";
+          this.submitted = false;
+        }
+      })
+    }
+  }
 }
