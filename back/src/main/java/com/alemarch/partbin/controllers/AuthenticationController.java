@@ -107,7 +107,7 @@ public class AuthenticationController {
 			return ResponseEntity.status(401).body("Not authenticated");
 		}
 
-		User user = (User) authentication.getPrincipal();
+		User user = userRepository.findById(((User)authentication.getPrincipal()).getId()).orElse(null);
 
 		return ResponseEntity.ok(userMapper.toDto(user));
 	}

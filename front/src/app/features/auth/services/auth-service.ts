@@ -7,14 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   constructor(private http: HttpClient) {
-    this.getCurrentUser().subscribe({
-      next: user => this.isAuthenticated.set(!!user),
-      error: () => this.isAuthenticated.set(false),
-    })
+    this.checkAuth();
   }
 
   private apiUrl = 'http://localhost:8080/auth'
-  isAuthenticated = signal<boolean>(false)
+    isAuthenticated = signal<boolean>(false)
 
   submitLoginForm(data: any): Observable<Object> {
     return this.http.post(this.apiUrl + "/login", data, {withCredentials: true});
@@ -22,6 +19,13 @@ export class AuthService {
 
   getCurrentUser() {
     return this.http.get(this.apiUrl + '/me', {withCredentials: true});
+  }
+
+  checkAuth() {
+    this.getCurrentUser().subscribe({
+      next: () => this.isAuthenticated.set(true),
+      error: () => this.isAuthenticated.set(false)
+    })
   }
 
   submitSignupForm(data: any): Observable<Object> {
