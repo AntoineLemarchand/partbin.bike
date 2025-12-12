@@ -1,12 +1,16 @@
 <h2>Profile</h2>
 <app-vtab>
   <app-vtab-item name="Profile" contentId="profile-form"/>
-  <app-vtab-item name="Coucou" contentId="coucou"/>
+  <app-vtab-item name="My products" contentId="products-list"/>
+  <app-vtab-item name="Wishlist" contentId="wishlist"/>
 
   <app-vtab-content id="profile-form">
     <app-profile-form [user]="user()"></app-profile-form>
   </app-vtab-content>
-  <app-vtab-content id="coucou">
-    <div>coucou</div>
+  <app-vtab-content id="products-list">
+    <div>Products</div>
+  </app-vtab-content>
+  <app-vtab-content id="wishlist">
+    <div>Wishlist</div>
   </app-vtab-content>
 </app-vtab>
