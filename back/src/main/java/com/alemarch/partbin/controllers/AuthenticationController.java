@@ -51,7 +51,7 @@ public class AuthenticationController {
 	private final JwtService jwtService;
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
 		Authentication authenticationRequest =
 			UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getEmail(), loginRequest.getPassword());
 		Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequest);
@@ -66,13 +66,13 @@ public class AuthenticationController {
 		sessionID.setPath("/");
 		response.addCookie(sessionID);
 
-		return new ResponseEntity<>("User signed in successfully!", HttpStatus.OK);
+		return new ResponseEntity<>(Map.of("message", "User signed in successfully!"), HttpStatus.OK);
 	}
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest, HttpServletRequest request) {
 		if (!userRepository.findByEmail(signupRequest.getEmail()).isEmpty()) {
-			return new ResponseEntity<>("Email already used!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(Map.of("message", "Email already used!"), HttpStatus.BAD_REQUEST);
 		}
 
 		User user = new User();
@@ -82,7 +82,7 @@ public class AuthenticationController {
 		user.setRoles(new HashSet<>());
 
 		userRepository.save(user);
-		return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+		return new ResponseEntity<>(Map.of("message", "User registered successfully)"), HttpStatus.OK);
 	}
 
 	@PostMapping("/logout")
@@ -92,7 +92,13 @@ public class AuthenticationController {
 		request.getSession().removeAttribute("SPRING_SECURITY_CONTEXT");
 		request.getSession().invalidate();
 		SecurityContextHolder.clearContext();
-		return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
+	
+		Cookie cookie = new Cookie("partbin_sid", null);
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		cookie.setHttpOnly(true);
+		response.addCookie(cookie);
+		return new ResponseEntity<>(Map.of("message", "Logged out successfully"), HttpStatus.OK);
 	}
 
 	@GetMapping("/me")

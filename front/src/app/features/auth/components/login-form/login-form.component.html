@@ -14,9 +14,6 @@
       @if (password?.hasError('required') && isSubmitted) {
         <div>Password is required</div>
       }
-      @if (password?.hasError('minlength') && isSubmitted) {
-        <div>Password must be at least 8 characters long</div>
-      }
     </div>
 
     <div>

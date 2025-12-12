@@ -1,7 +1,8 @@
 import { Component, inject } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { LoginService } from "../../services/login-service";
 import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth-service";
+import { filter } from "rxjs";
 
 @Component({
   selector: 'app-login-form',
@@ -14,7 +15,7 @@ import { Router } from "@angular/router";
 export class LoginForm {
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    password: new FormControl('', [Validators.required]),
   })
   get email() { return this.loginForm.get("email") }
   get password() { return this.loginForm.get("password") }
@@ -24,7 +25,7 @@ export class LoginForm {
   errorMessage: string | null = null
   successMessage: string | null = null
 
-  private loginService = inject(LoginService)
+  private authService = inject(AuthService)
   private router = inject(Router)
 
 
@@ -34,16 +35,19 @@ export class LoginForm {
       this.errorMessage = null;
       this.successMessage = null;
 
-      this.loginService.submitForm(this.loginForm.value)
-        .subscribe({
-          next: () => {
-            this.router.navigate(['/profile'])
-          },
-          error: () => {
-            this.errorMessage = "Username or password invalid. Please try again";
-            this.submitted = false;
-          }
-        })
+      this.authService.submitLoginForm(this.loginForm.value)
+      .subscribe({
+        next: () => {
+            console.log("setting authenticated")
+            this.authService.isAuthenticated.set(true)
+            console.log("redirecting")
+            this.router.navigateByUrl('/user')
+        },
+        error: () => {
+          this.errorMessage = "Username or password invalid. Please try again";
+          this.submitted = false;
+        }
+      })
     }
   }
 }

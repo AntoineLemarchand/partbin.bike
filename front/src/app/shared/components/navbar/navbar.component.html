@@ -4,11 +4,12 @@
     SEARCHBAR
   </h2>
   <div>
-    @if(isConnected) {
+    <a href="#"><ng-icon name="matShoppingBasketOutline" /></a>
+    @if(isConnected()) {
       <a href="#"><ng-icon name="matPersonOutline" /></a>
+      <button (click)="logout()"><ng-icon name="matLogoutOutline" /></button>
     } @else {
       <a href="/auth/login"><ng-icon name="matLoginOutline" /></a>
     }
-    <a href="#"><ng-icon name="matShoppingBasketOutline" /></a>
   </div>
 </nav>

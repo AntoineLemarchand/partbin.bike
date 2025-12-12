@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { matPersonOutline } from "@ng-icons/material-icons/baseline";
-import { matLoginOutline, matShoppingBasketOutline } from "@ng-icons/material-icons/outline";
+import { matLoginOutline, matLogoutOutline, matShoppingBasketOutline } from "@ng-icons/material-icons/outline";
+import { AuthService } from "../../../features/auth/services/auth-service";
 
 @Component({
   selector: 'app-navbar',
@@ -9,10 +10,17 @@ import { matLoginOutline, matShoppingBasketOutline } from "@ng-icons/material-ic
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   imports: [ NgIcon ],
-  viewProviders: [provideIcons({ matPersonOutline, matLoginOutline, matShoppingBasketOutline})]
+  viewProviders: [provideIcons({ matPersonOutline, matLoginOutline, matLogoutOutline, matShoppingBasketOutline})]
 })
 
 export class NavbarComponent {
   name = "partbin.bike";
-  isConnected = false;
+  authService = inject(AuthService)
+  isConnected = this.authService.isAuthenticated;
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => this.authService.isAuthenticated.set(false)
+    })
+  }
 }

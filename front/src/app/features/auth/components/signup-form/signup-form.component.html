@@ -1,18 +1,34 @@
-<form [formGroup]="signupForm" (ngSubmit="onSubmit()")>
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <div class="field">
-      <input id="username" type="text" placeholder="Username" formControlName="username" />
+      <input name="username" type="text" placeholder="Username" formControlName="username" />
+      @if (username?.hasError('required') && isSubmitted) {
+        <div>Username is required</div>
+      }
     </div>
 
     <div class="field">
-      <input id="email" type="text" placeholder="Email" formControlName="email" />
+      <input name="email" type="text" placeholder="Email" formControlName="email" />
+      {{email?.get("email")}}
+      @if (email?.hasError('required') && isSubmitted) {
+        <div>Email is required</div>
+      }
+      @if (email?.hasError('email') && isSubmitted) {
+        <div>Please provide a valid email</div>
+      }
     </div>
 
     <div class="field">
-      <input id="password" type="password" placeholder="Password" formControlName="email" />
+      <input name="password" type="password" placeholder="Password" formControlName="password" />
+      @if (password?.hasError('required') && isSubmitted) {
+        <div>Password is required</div>
+      }
+      @if (password?.hasError('minlength') && isSubmitted) {
+        <div>Password must be at least 8 characters long</div>
+      }
     </div>
 
     <div class="field">
-      <input id="confirmPassword" type="password" placeholder="Confirm password" formControlName="confirmPassword" />
+      <input name="confirmPassword" type="password" placeholder="Confirm password" formControlName="confirmPassword" />
     </div>
 
     <div>
