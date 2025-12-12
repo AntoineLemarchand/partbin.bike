@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 public class ProductService {
 	@PersistenceContext
 	private EntityManager entityManager;
-	@Autowired
 	private ProductMapper productMapper;
 
 	public Iterable<ProductDto> getProducts(Map<String, Object> filters, SortParam sort) {

@@ -30,6 +30,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+		if ("/auth/login".equals(request.getRequestURI()) || "/auth/signup".equals(request.getRequestURI())) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
 		jakarta.servlet.http.Cookie[] cookies = request.getCookies();
 		String jwt = null;
 		if (cookies != null) {
