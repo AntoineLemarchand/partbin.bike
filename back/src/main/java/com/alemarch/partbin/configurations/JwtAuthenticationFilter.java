@@ -30,25 +30,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		final String authHeader = request.getHeader("Authorization");
-
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+		jakarta.servlet.http.Cookie[] cookies = request.getCookies();
+		String jwt = null;
+		if (cookies != null) {
+			for (jakarta.servlet.http.Cookie cookie : cookies) {
+				if ("partbin_sid".equals(cookie.getName())) {
+					jwt = cookie.getValue();
+					break;
+				}
+			}
+		}
+		if (jwt == null || jwt.isEmpty()) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
+
 		try {
-			final String jwt = authHeader.substring(7);
 			final String userEmail = jwtService.extractUsername(jwt);
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (userEmail != null && authentication == null) {
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 				if (jwtService.isTokenValid(jwt, userDetails)) {
 					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails,
-						null,
-						userDetails.getAuthorities()
-					);
+							userDetails,
+							null,
+							userDetails.getAuthorities()
+							);
 					authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 					SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 				}

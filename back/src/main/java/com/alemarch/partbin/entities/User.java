@@ -25,8 +25,8 @@ public class User implements UserDetails {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "username")
-	private String username;
+	@Column(name = "display_name")
+	private String displayName;
 
 	@Column(name = "email", unique = true)
 	private String email;
@@ -42,6 +42,11 @@ public class User implements UserDetails {
 		return roles.stream()
 			.map(role -> new SimpleGrantedAuthority(role.getName()))
 			.collect(Collectors.toList());
+	}
+
+	@Override
+	public String getUsername() {
+		return this.getEmail();
 	}
 
 	@ManyToMany
@@ -68,7 +73,7 @@ public class User implements UserDetails {
 	public String toString() {
 		return getClass().getSimpleName() + "(" +
 			"id = " + id + ", " +
-			"name = " + username + ", " +
+			"name = " + displayName + ", " +
 			"email = " + email + ")";
 	}
 }

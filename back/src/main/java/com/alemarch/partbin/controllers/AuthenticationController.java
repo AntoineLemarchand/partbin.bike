@@ -1,5 +1,9 @@
 package com.alemarch.partbin.controllers;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,16 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alemarch.partbin.dtos.SignupRequest;
+import com.alemarch.partbin.dtos.UserDto;
 import com.alemarch.partbin.dtos.LoginRequest;
 import com.alemarch.partbin.repositories.UserRepository;
 import com.alemarch.partbin.services.JwtService;
 import com.alemarch.partbin.entities.User;
+import com.alemarch.partbin.mappers.UserMapper;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @AllArgsConstructor
@@ -32,6 +42,7 @@ import lombok.AllArgsConstructor;
 public class AuthenticationController {
 
 	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 
 	private final PasswordEncoder passwordEncoder;
 	private final LogoutHandler logoutHandler;
@@ -59,15 +70,16 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest, HttpServletRequest request) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest, HttpServletRequest request) {
 		if (!userRepository.findByEmail(signupRequest.getEmail()).isEmpty()) {
 			return new ResponseEntity<>("Email already used!", HttpStatus.BAD_REQUEST);
 		}
 
 		User user = new User();
-		user.setUsername(signupRequest.getName());
+		user.setDisplayName(signupRequest.getUsername());
 		user.setEmail(signupRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+		user.setRoles(new HashSet<>());
 
 		userRepository.save(user);
 		return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
@@ -82,5 +94,17 @@ public class AuthenticationController {
 		SecurityContextHolder.clearContext();
 		return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
 	}
+
+	@GetMapping("/me")
+	public ResponseEntity<?> me(Authentication authentication) {
+		if (authentication == null || !authentication.isAuthenticated()) {
+			return ResponseEntity.status(401).body("Not authenticated");
+		}
+
+		User user = (User) authentication.getPrincipal();
+
+		return ResponseEntity.ok(userMapper.toDto(user));
+	}
+
 
 }

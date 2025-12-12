@@ -32,7 +32,6 @@ public class UserService {
 
 	private UserMapper userMapper;
 
-
 	public Iterable<UserDto> getUsers(Map<String, Object> filters, SortParam sort) {
 		CriteriaQuery<User> cq = CriteriaQueryBuilder.build(entityManager, User.class, filters, sort);
 		List<User> users = entityManager.createQuery(cq).getResultList();
