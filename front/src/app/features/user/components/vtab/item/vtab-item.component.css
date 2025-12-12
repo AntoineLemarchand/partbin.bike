@@ -2,4 +2,17 @@ button {
   width: 100%;
   padding: 1rem 2rem;
   text-align: left;
+  border: none;
+  border-bottom: gray 2px solid;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgba(20, 20, 20, .1);
+}
+
+button:disabled {
+  background-color: rgba(20, 20, 20, .2);
+  color: black;
 }

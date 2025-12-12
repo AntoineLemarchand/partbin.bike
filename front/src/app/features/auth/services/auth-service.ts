@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UserDto } from '../../../shared/models/UserDto';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,8 @@ export class AuthService {
     return this.http.post(this.apiUrl + "/login", data, {withCredentials: true});
   }
 
-  getCurrentUser() {
-    return this.http.get(this.apiUrl + '/me', {withCredentials: true});
+  getCurrentUser(): Observable<UserDto> {
+    return this.http.get(this.apiUrl + '/me', {withCredentials: true}) as Observable<UserDto>;
   }
 
   checkAuth() {

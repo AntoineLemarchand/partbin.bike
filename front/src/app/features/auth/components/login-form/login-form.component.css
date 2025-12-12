@@ -31,7 +31,7 @@ input ~ div {
   text-align: left;
 }
 
-button[type="submit"], a#create-account-link {
+a#create-account-link {
   background-color: color-mix(in srgb, var(--primary), transparent 20%);
   color: white;
   padding: .4rem;
@@ -42,7 +42,7 @@ button[type="submit"], a#create-account-link {
   font-size: 1rem;
 }
 
-button[type="submit"]:hover, a#create-account-link:hover {
+a#create-account-link:hover {
   background-color: var(--primary);
 }
 

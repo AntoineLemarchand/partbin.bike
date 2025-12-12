@@ -1,5 +1,6 @@
 @import "assets/styles/colors.css";
 @import "assets/styles/fonts.css";
+@import "assets/styles/inputs.css";
 
 html, body {
   margin: 0;
