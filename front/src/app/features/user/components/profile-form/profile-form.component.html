@@ -1,0 +1,16 @@
+<form [formGroup]="profileForm">
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" placeholder="email" formControlName="username" />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input name="email" type="text" placeholder="email" formControlName="email" />
+      @if (email?.hasError('email')) {
+        <div>Please provide a valid email</div>
+      }
+    </div>
+    <div>
+      <button type="submit">Update profile</button>
+    </div>
+</form>

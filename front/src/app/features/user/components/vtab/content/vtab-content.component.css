@@ -1,0 +1,8 @@
+div {
+  display: none;
+  position: absolute;
+}
+
+div.selected {
+  display: inherit;
+}

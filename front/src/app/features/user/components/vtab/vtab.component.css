@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 15rem;
+}
+
+.items {
+  position: relative;
+}

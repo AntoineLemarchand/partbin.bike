@@ -1,0 +1,12 @@
+<h2>Profile</h2>
+<app-vtab>
+  <app-vtab-item name="Profile" contentId="profile-form"/>
+  <app-vtab-item name="Coucou" contentId="coucou"/>
+
+  <app-vtab-content id="profile-form">
+    <app-profile-form [user]="user()"></app-profile-form>
+  </app-vtab-content>
+  <app-vtab-content id="coucou">
+    <div>coucou</div>
+  </app-vtab-content>
+</app-vtab>
