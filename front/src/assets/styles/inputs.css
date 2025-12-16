@@ -10,7 +10,7 @@ input[type="text"], input[type="password"] {
   background-color: color-mix(in srgb, gray, transparent 80%);
 }
 
-button[type="submit"] {
+button {
   background-color: color-mix(in srgb, var(--primary), transparent 20%);
   color: white;
   padding: .4rem;
@@ -21,6 +21,6 @@ button[type="submit"] {
   font-size: 1rem;
 }
 
-button[type="submit"]:hover {
+button:hover {
   background-color: var(--primary);
 }

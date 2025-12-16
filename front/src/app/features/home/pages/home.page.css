@@ -1,0 +1,8 @@
+.modal-button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: max-content;
+  height: max-content;
+  margin: 2rem;
+}

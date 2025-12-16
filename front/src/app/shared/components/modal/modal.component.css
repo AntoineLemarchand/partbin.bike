@@ -1,0 +1,29 @@
+.modal-wrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background-color: white;
+}
+
+.modal-wrapper.opened {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.modal-content {
+  width: max-content;
+  height: max-content;
+  margin: auto;
+}
+
+button {
+  height: max-content;
+  width: max-content;
+  background-color: white;
+  color: black;
+  margin-left: auto;
+  font-size: 2rem;
+}
