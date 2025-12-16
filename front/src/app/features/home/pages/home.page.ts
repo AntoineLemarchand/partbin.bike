@@ -10,7 +10,7 @@ import { Modal } from '../../../shared/components/modal/modal.component';
   template: `
     <h1>homepage</h1>
     <div class="modal-button">
-      <app-modal-button modalId="new-product-modal"><ng-icon name="matPlusOutline" /></app-modal-button>
+      <app-modal-button modalId="new-product-modal">New product <ng-icon name="matPlusOutline" /></app-modal-button>
     </div>
     <app-modal>coucou</app-modal>
   `,

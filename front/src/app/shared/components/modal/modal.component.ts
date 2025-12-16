@@ -6,7 +6,7 @@ import { matCloseOutline } from "@ng-icons/material-icons/outline";
   selector: 'app-modal',
   standalone: true,
   template: `
-  <div class="modal-wrapper" [class.opened]="true" id={{modalId}}>
+  <div class="modal-wrapper" [class.opened]="isOpened" id={{modalId}}>
     <button><ng-icon name="matCloseOutline" /></button>
     <div class="modal-content">
       <ng-content></ng-content>
@@ -20,4 +20,6 @@ import { matCloseOutline } from "@ng-icons/material-icons/outline";
 
 export class Modal {
   @Input() modalId: string = ""
+
+  isOpened = false;
 }
