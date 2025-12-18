@@ -6,13 +6,14 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { Modal } from '../../../shared/components/modal/modal.component';
 import { ProductForm } from '../../product/components/product-form/product-form.component';
 import { ProductService, Product } from '../../product/services/product-service';
+import { ProductListComponent } from '../../../shared/components/product-list/product-list.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: "./home.page.html",
   styleUrl: "./home.page.css",
-  imports: [CommonModule, ModalButton, NgIcon, Modal, ProductForm],
+  imports: [CommonModule, ModalButton, NgIcon, Modal, ProductForm, ProductListComponent],
   viewProviders: [provideIcons({matPlusOutline})]
 })
 export class HomePage implements OnInit {

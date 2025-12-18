@@ -1,0 +1,31 @@
+<div class="products-container">
+  <div class="products-header">
+    <h2>{{ title }}</h2>
+    <span class="product-count" *ngIf="products.length > 0">
+      {{ products.length }} product{{ products.length !== 1 ? 's' : '' }}
+    </span>
+  </div>
+  
+  <div class="products-grid" *ngIf="products.length > 0">
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-header">
+        <h3>{{ product.name }}</h3>
+        <span class="product-id">#{{ product.id }}</span>
+      </div>
+      <p class="product-description">{{ product.description }}</p>
+      <div class="product-meta">
+        <small>Category: {{ product.categoryId }}</small>
+        <small>Owner: {{ product.ownerId }}</small>
+      </div>
+    </div>
+  </div>
+  
+  <div class="empty-state" *ngIf="!loading && products.length === 0">
+    <h2>{{ emptyMessage }}</h2>
+    <p>{{ emptyDescription }}</p>
+  </div>
+  
+  <div class="loading" *ngIf="loading">
+    <p>{{ loadingMessage }}</p>
+  </div>
+</div>

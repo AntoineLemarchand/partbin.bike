@@ -12,4 +12,5 @@
 
 .items {
   position: relative;
+  flex-grow: 1;
 }

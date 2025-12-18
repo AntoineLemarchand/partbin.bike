@@ -8,9 +8,23 @@
     <app-profile-form [user]="user()"></app-profile-form>
   </app-vtab-content>
   <app-vtab-content id="products-list">
-    <div>Products</div>
+    <app-product-list 
+      [products]="myProducts()"
+      [loading]="myProductsLoading()"
+      title="My Products"
+      emptyMessage="You haven't created any products yet"
+      emptyDescription="Start by adding your first product to the marketplace!"
+      loadingMessage="Loading your products...">
+    </app-product-list>
   </app-vtab-content>
   <app-vtab-content id="wishlist">
-    <div>Wishlist</div>
+    <app-product-list 
+      [products]="wishlist()"
+      [loading]="wishlistLoading()"
+      title="My Wishlist"
+      emptyMessage="Your wishlist is empty"
+      emptyDescription="Browse products and add them to your wishlist!"
+      loadingMessage="Loading your wishlist...">
+    </app-product-list>
   </app-vtab-content>
 </app-vtab>

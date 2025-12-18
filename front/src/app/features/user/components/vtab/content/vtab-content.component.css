@@ -1,6 +1,6 @@
 div {
   display: none;
-  position: absolute;
+  position: inherit;
 }
 
 div.selected {
