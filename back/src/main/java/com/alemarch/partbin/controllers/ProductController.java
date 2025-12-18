@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,7 @@ import com.alemarch.partbin.services.ProductService;
 import com.alemarch.partbin.dtos.SortParam;
 import com.alemarch.partbin.entities.Product;
 import com.alemarch.partbin.entities.User;
-import com.alemarch.partbin.mappers.ProductMapper;
-import com.alemarch.partbin.repositories.ProductRepository;
+
 
 import lombok.AllArgsConstructor;
 import tools.jackson.core.type.TypeReference;
@@ -31,9 +31,6 @@ import tools.jackson.databind.ObjectMapper;
 @AllArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
-	private final ProductRepository productRepository;
-	private final ProductMapper productMapper;
-
 	private final ProductService productService;
 
 	@GetMapping
@@ -56,13 +53,10 @@ public class ProductController {
 	@PostMapping
 	public ResponseEntity<String> createProduct(
 			Authentication authentication,
-			@RequestParam(required = true, name = "product") CreateProductDto product
+			@RequestBody(required = true) CreateProductDto product
 	) {
 		User owner = (User) authentication.getPrincipal();
-		Product productEntity = productMapper.toEntity(product);
-		productEntity.setOwner(owner);
-
-		productRepository.save(productEntity);
+		productService.createProduct(product, owner);
 		return ResponseEntity.ok("Product added successfully");
 	}
 }

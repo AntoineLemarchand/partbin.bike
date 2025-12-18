@@ -19,7 +19,7 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
 	public ProblemDetail handleSecurityException(Exception exception) {
 		return switch (exception) {
 			case BadCredentialsException e -> createProblemDetail(401, e.getMessage(), "The username or password is incorrect");
-			case AccountStatusException e -> createProblemDetail(403, e.getMessage(), "The account is locket");
+			case AccountStatusException e -> createProblemDetail(403, e.getMessage(), "The account is locked");
 			case AccessDeniedException e -> createProblemDetail(403, e.getMessage(), "You are not authorized to access this resource");
 			case SignatureException e -> createProblemDetail(403, e.getMessage(), "The JWT signature is invalid");
 			case ExpiredJwtException e -> createProblemDetail(403, e.getMessage(), "The JWT token has expired");

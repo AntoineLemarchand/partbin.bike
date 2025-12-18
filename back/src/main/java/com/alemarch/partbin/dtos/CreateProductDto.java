@@ -9,5 +9,4 @@ public class CreateProductDto {
 	private String name;
 	private String description;
 	private long categoryId;
-	private long ownerId;
 }

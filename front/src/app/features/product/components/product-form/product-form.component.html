@@ -1,0 +1,23 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <input name="name" type="text" placeholder="Product Name" formControlName="name" required />
+      @if (name?.hasError('required') && isSubmitted) {
+        <div>Product name is required</div>
+      }
+    </div>
+
+    <div class="field">
+      <textarea name="description" placeholder="Product Description" formControlName="description" required></textarea>
+      @if (description?.hasError('required') && isSubmitted) {
+        <div>Product description is required</div>
+      }
+    </div>
+
+
+    <div>
+      <button type="submit">Create Product</button>
+    </div>
+
+    {{successMessage}}
+    {{errorMessage}}
+</form>

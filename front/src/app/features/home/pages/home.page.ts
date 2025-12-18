@@ -3,6 +3,7 @@ import { ModalButton } from '../../../shared/components/modal/modal-button.compo
 import { matPlusOutline } from '@ng-icons/material-icons/outline';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { Modal } from '../../../shared/components/modal/modal.component';
+import { ProductForm } from '../../product/components/product-form/product-form.component';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +15,11 @@ import { Modal } from '../../../shared/components/modal/modal.component';
     </div>
     <app-modal modalId="new-product-modal">
       <h2 id="modal-title">Create New Product</h2>
-      <p>This is where your product creation form would go.</p>
-      <button>Save Product</button>
+      <app-product-form></app-product-form>
     </app-modal>
   `,
   styleUrl: "./home.page.css",
-  imports: [ModalButton, NgIcon, Modal],
+  imports: [ModalButton, NgIcon, Modal, ProductForm],
   viewProviders: [provideIcons({matPlusOutline})]
 })
 export class HomePage {}
