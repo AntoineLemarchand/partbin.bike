@@ -8,6 +8,14 @@ export interface CreateProductRequest {
   categoryId: number;
 }
 
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  categoryId: number;
+  ownerId: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,5 +26,9 @@ export class ProductService {
 
   createProduct(product: CreateProductRequest): Observable<string> {
     return this.http.post<string>(this.apiUrl, product, {withCredentials: true});
+  }
+
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiUrl, {withCredentials: true});
   }
 }
