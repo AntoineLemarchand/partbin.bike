@@ -1,5 +1,6 @@
 package com.alemarch.partbin.services;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,9 +56,16 @@ public class ProductService {
 			.name(productDto.getName())
 			.description(productDto.getDescription())
 			.category(category)
-			.owner(managedOwner) // Use the managed owner
+			.owner(managedOwner) // Use managed owner
 			.build();
 
 		return productRepository.save(product);
+	}
+
+	@Transactional
+	public Iterable<ProductDto> getUserProducts(User user) {
+		Map<String, Object> filters = new HashMap<>();
+		filters.put("owner.id", user.getId());
+		return getProducts(filters, null);
 	}
 }

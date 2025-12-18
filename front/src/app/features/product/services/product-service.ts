@@ -31,4 +31,20 @@ export class ProductService {
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl, {withCredentials: true});
   }
+
+  getMyProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/my`, {withCredentials: true});
+  }
+
+  getMyWishlist(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/wishlist`, {withCredentials: true});
+  }
+
+  addToWishlist(productId: number): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/wishlist/${productId}`, {}, {withCredentials: true});
+  }
+
+  removeFromWishlist(productId: number): Observable<string> {
+    return this.http.delete<string>(`${this.apiUrl}/wishlist/${productId}`, {withCredentials: true});
+  }
 }

@@ -32,12 +32,10 @@ export class ProfilePage implements OnInit {
     }
 
     private loadUserProducts() {
-      // TODO: Implement endpoint to get user's products
-      // For now, use all products as placeholder
       this.myProductsLoading.set(true);
-      this.productService.getProducts().subscribe({
+      this.productService.getMyProducts().subscribe({
         next: (products) => {
-          this.myProducts.set(products.filter(p => p.ownerId === this.user()?.id));
+          this.myProducts.set(products);
           this.myProductsLoading.set(false);
         },
         error: (error) => {
@@ -48,8 +46,16 @@ export class ProfilePage implements OnInit {
     }
 
     private loadWishlist() {
-      // TODO: Implement wishlist functionality
-      // For now, use empty array as placeholder
-      this.wishlistLoading.set(false);
+      this.wishlistLoading.set(true);
+      this.productService.getMyWishlist().subscribe({
+        next: (products) => {
+          this.wishlist.set(products);
+          this.wishlistLoading.set(false);
+        },
+        error: (error) => {
+          console.error('Error loading wishlist:', error);
+          this.wishlistLoading.set(false);
+        }
+      });
     }
 }
