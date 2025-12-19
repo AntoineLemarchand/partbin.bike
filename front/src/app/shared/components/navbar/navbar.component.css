@@ -16,9 +16,11 @@ h1 {
 nav > div {
   display: flex;
   gap: .5rem;
+  height: max-content;
+  align-items: center;
 }
 
-ng-icon {
+ng-icon, svg {
   font-size: 1rem;
   width: 1.5rem;
   height: 1.5rem;
