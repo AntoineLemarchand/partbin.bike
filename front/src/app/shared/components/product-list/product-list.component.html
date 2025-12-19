@@ -1,31 +1,41 @@
 <div class="products-container">
   <div class="products-header">
     <h2>{{ title }}</h2>
-    <span class="product-count" *ngIf="products.length > 0">
+    @if (products.length > 0) {
+    <span class="product-count">
       {{ products.length }} product{{ products.length !== 1 ? 's' : '' }}
     </span>
+    }
   </div>
-  
-  <div class="products-grid" *ngIf="products.length > 0">
-    <div class="product-card" *ngFor="let product of products">
+
+@if (products.length > 0) {
+  <div class="products-grid">
+  @for (product of products; track product.id) {
+    <div class="product-card">
       <div class="product-header">
         <h3>{{ product.name }}</h3>
         <span class="product-id">#{{ product.id }}</span>
       </div>
       <p class="product-description">{{ product.description }}</p>
       <div class="product-meta">
-        <small>Category: {{ product.categoryId }}</small>
-        <small>Owner: {{ product.ownerId }}</small>
+        <small>{{ product.categoryId }}</small>
+        <small>{{ product.owner.name }}</small>
       </div>
     </div>
+  }
   </div>
-  
-  <div class="empty-state" *ngIf="!loading && products.length === 0">
+}
+
+@if (!loading && products.length == 0) {
+  <div class="empty-state">
     <h2>{{ emptyMessage }}</h2>
     <p>{{ emptyDescription }}</p>
   </div>
-  
-  <div class="loading" *ngIf="loading">
+}
+
+@if (loading) {
+  <div class="loading">
     <p>{{ loadingMessage }}</p>
   </div>
+}
 </div>

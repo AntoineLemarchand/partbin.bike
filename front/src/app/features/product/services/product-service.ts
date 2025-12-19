@@ -13,7 +13,10 @@ export interface Product {
   name: string;
   description: string;
   categoryId: number;
-  ownerId: number;
+  owner: {
+    id: number,
+    name: string
+  }
 }
 
 @Injectable({
