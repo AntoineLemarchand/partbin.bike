@@ -29,6 +29,12 @@
 
     <div class="field">
       <input name="confirmPassword" type="password" placeholder="Confirm password" formControlName="confirmPassword" />
+      @if (confirmPassword?.hasError('required') && isSubmitted) {
+        <div>Please confirm your password</div>
+      }
+      @if (signupForm.hasError('passwordMismatch') && isSubmitted) {
+        <div>Passwords do not match</div>
+      }
     </div>
 
     <div>
