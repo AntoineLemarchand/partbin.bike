@@ -14,6 +14,7 @@ export class ProductForm {
   productForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
+    categoryId: new FormControl('', [Validators.required])
   })
 
   get name() { return this.productForm.get("name") }

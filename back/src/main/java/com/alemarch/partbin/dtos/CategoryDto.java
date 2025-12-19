@@ -6,10 +6,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ProductDto {
-	private long id;
+public class CategoryDto {
+	private Byte id;
 	private String name;
-	private String description;
-	private CategoryDto category;
-	private OwnerDto owner;
 }
+

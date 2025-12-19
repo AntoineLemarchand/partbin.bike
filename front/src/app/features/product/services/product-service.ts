@@ -12,7 +12,10 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  categoryId: number;
+  category: {
+    id: number,
+    name: string
+  },
   owner: {
     id: number,
     name: string
