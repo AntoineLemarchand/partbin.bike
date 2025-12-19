@@ -1,16 +1,17 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ProductService, CreateProductRequest } from "../../services/product-service";
+import { ProductService, CreateProductRequest, Category } from "../../services/product-service";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.css',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
 })
 
-export class ProductForm {
+export class ProductForm implements OnInit {
   productForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
@@ -28,6 +29,22 @@ export class ProductForm {
   successMessage: string | null = null
 
   private productService = inject(ProductService)
+  categories: Category[] = []
+
+  ngOnInit() {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.productService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: () => {
+        this.errorMessage = "Failed to load categories.";
+      }
+    });
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -38,7 +55,7 @@ export class ProductForm {
       const productData: CreateProductRequest = {
         name: this.productForm.value.name!,
         description: this.productForm.value.description!,
-        categoryId: 1,
+        categoryId: Number(this.productForm.value.categoryId!),
       };
 
       this.productService.createProduct(productData)

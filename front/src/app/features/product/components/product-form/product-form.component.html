@@ -13,6 +13,17 @@
       }
     </div>
 
+    <div class="field">
+      <select name="categoryId" formControlName="categoryId" required>
+        <option value="">Select a category</option>
+        @for (category of categories; track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
+        }
+      </select>
+      @if (categoryId?.hasError('required') && isSubmitted) {
+        <div>Category is required</div>
+      }
+    </div>
 
     <div>
       <button type="submit">Create Product</button>

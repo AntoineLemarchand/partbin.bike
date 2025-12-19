@@ -8,6 +8,11 @@ export interface CreateProductRequest {
   categoryId: number;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -52,5 +57,9 @@ export class ProductService {
 
   removeFromWishlist(productId: number): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/wishlist/${productId}`, {withCredentials: true});
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>('http://localhost:8080/categories', {withCredentials: true});
   }
 }
