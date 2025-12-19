@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alemarch.partbin.dtos.CreateProductDto;
 import com.alemarch.partbin.dtos.ProductDto;
 import com.alemarch.partbin.services.ProductService;
-import com.alemarch.partbin.services.WishlistService;
+import com.alemarch.partbin.services.UserService;
 
 import com.alemarch.partbin.dtos.SortParam;
-import com.alemarch.partbin.entities.Product;
 import com.alemarch.partbin.entities.User;
 
 
@@ -36,7 +35,7 @@ import tools.jackson.databind.ObjectMapper;
 @RequestMapping("/products")
 public class ProductController {
 	private final ProductService productService;
-	private final WishlistService wishlistService;
+	private final UserService userService;
 
 	@GetMapping
 	public ResponseEntity<Iterable<ProductDto>> getProducts(
@@ -74,7 +73,7 @@ public class ProductController {
 	@GetMapping("/wishlist")
 	public ResponseEntity<List<ProductDto>> getMyWishlist(Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
-		return ResponseEntity.ok(wishlistService.getUserWishlist(user));
+		return ResponseEntity.ok(userService.getWishlist(user));
 	}
 
 	@PostMapping("/wishlist/{productId}")
@@ -83,7 +82,7 @@ public class ProductController {
 			@PathVariable Long productId
 	) {
 		User user = (User) authentication.getPrincipal();
-		wishlistService.addToWishlist(user, productId);
+		userService.addToWishlist(user, productId);
 		return ResponseEntity.ok("Added to wishlist");
 	}
 
@@ -93,7 +92,7 @@ public class ProductController {
 			@PathVariable Long productId
 	) {
 		User user = (User) authentication.getPrincipal();
-		wishlistService.removeFromWishlist(user, productId);
+		userService.removeFromWishlist(user, productId);
 		return ResponseEntity.ok("Removed from wishlist");
 	}
 }
