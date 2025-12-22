@@ -50,7 +50,7 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product createProduct(CreateProductDto productDto, User owner) {
+	public ProductDto createProduct(CreateProductDto productDto, User owner) {
 		User managedOwner = userRepository.findById(owner.getId())
 			.orElseThrow(() -> new RuntimeException("User not found with id: " + owner.getId()));
 
@@ -64,7 +64,11 @@ public class ProductService {
 			.owner(managedOwner) // Use managed owner
 			.build();
 
-		return productRepository.save(product);
+		Product newProduct = productRepository.save(product);
+		managedOwner.getOwnedProducts().add(newProduct);
+
+		userRepository.save(managedOwner);
+		return productMapper.toDto(newProduct);
 	}
 
 	@Transactional

@@ -9,7 +9,7 @@ export interface Message {
     id: number;
     name: string;
   };
-  timestamp: string;
+  sentOn: string;
 }
 
 export interface Chat {

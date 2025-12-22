@@ -30,7 +30,7 @@
                [class.other-message]="!isOwnMessage(message)">
             <div class="message-content">
               <p>{{ message.content }}</p>
-              <span class="message-time">{{ formatTimestamp(message.timestamp) }}</span>
+              <span class="message-time">{{ formatTimestamp(message.sentOn) }}</span>
             </div>
             @if (!isOwnMessage(message)) {
               <div class="message-sender">

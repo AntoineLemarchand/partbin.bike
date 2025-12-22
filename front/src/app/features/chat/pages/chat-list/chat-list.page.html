@@ -9,7 +9,6 @@
     <div class="error">Failed to load chats. Please try again.</div>
   } @else {
     <div class="chats-sections">
-      <!-- My Products Section -->
       @if (myProductChats().length > 0) {
         <section class="chat-section">
           <h2 class="section-title">My Products</h2>
@@ -21,7 +20,7 @@
                   <p class="chat-last-message">{{ getLastMessage(chat) }}</p>
                 </div>
                 <div class="chat-meta">
-                  <span class="chat-time">{{ formatTimestamp(chat.messages[chat.messages.length - 1]?.timestamp || '') }}</span>
+                  <span class="chat-time">{{ formatTimestamp(chat.messages[chat.messages.length - 1]?.sentOn || '') }}</span>
                 </div>
               </a>
             }
@@ -29,7 +28,6 @@
         </section>
       }
 
-      <!-- Other Products Section -->
       @if (otherProductChats().length > 0) {
         <section class="chat-section">
           <h2 class="section-title">Other Products</h2>
@@ -41,7 +39,7 @@
                   <p class="chat-last-message">{{ getLastMessage(chat) }}</p>
                 </div>
                 <div class="chat-meta">
-                  <span class="chat-time">{{ formatTimestamp(chat.messages[chat.messages.length - 1]?.timestamp || '') }}</span>
+                  <span class="chat-time">{{ formatTimestamp(chat.messages[chat.messages.length - 1]?.sentOn || '') }}</span>
                 </div>
               </a>
             }

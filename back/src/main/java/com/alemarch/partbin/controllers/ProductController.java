@@ -68,13 +68,12 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> createProduct(
+	public ResponseEntity<ProductDto> createProduct(
 			Authentication authentication,
 			@RequestBody(required = true) CreateProductDto product
 	) {
 		User owner = (User) authentication.getPrincipal();
-		productService.createProduct(product, owner);
-		return ResponseEntity.ok("Product added successfully");
+		return ResponseEntity.ok(productService.createProduct(product, owner));
 	}
 
 	@GetMapping("/my")

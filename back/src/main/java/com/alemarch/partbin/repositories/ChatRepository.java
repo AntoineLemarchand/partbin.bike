@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.alemarch.partbin.entities.Chat;
-import com.alemarch.partbin.entities.Product;
-
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 	@EntityGraph
@@ -18,7 +16,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
 	@EntityGraph
 	@Query("SELECT c from Chat c WHERE c.product.id = :productId")
-	Iterable<Chat> findByProduct(Product product);
+	Iterable<Chat> findByProduct(long productId);
 
 	@EntityGraph
 	@Query("SELECT c from Chat c WHERE c.user.id = :userId")

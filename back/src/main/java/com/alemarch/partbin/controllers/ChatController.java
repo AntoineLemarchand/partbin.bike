@@ -31,6 +31,18 @@ public class ChatController {
 		return ResponseEntity.ok(chats);
 	}
 
+	@GetMapping("/{chatId}")
+	public ResponseEntity<ChatDto> getChatById(
+			Authentication authentication,
+			@PathVariable(required = true) long chatId
+	) {
+		ChatDto chat = chatService.getChatIfMember(((User)authentication.getPrincipal()).getId(), chatId);
+		if (chat == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(chat);
+	}
+
 	@PostMapping("/message/{chatId}")
 	public ResponseEntity<MessageDto> sendMessage(
 			Authentication authentication,

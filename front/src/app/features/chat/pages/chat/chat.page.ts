@@ -39,10 +39,15 @@ export class ChatPageComponent implements OnInit {
     }
   }
 
+  private sortMessagesByDate(chat: Chat): Chat {
+    chat.messages.sort((a, b) => new Date(a.sentOn).getTime() - new Date(b.sentOn).getTime());
+    return chat;
+  }
+
   private loadChatByProductId(productId: number): void {
     this.chatService.getOrCreateChat(productId).subscribe({
       next: (loadedChat) => {
-        this.chat.set(loadedChat)
+        this.chat.set(this.sortMessagesByDate(loadedChat))
         this.loading.set(false)
         setTimeout(() => this.scrollToBottom(), 100);
       },
@@ -56,7 +61,7 @@ export class ChatPageComponent implements OnInit {
   private loadChatById(chatId: number): void {
     this.chatService.getChatById(chatId).subscribe({
       next: (loadedChat) => {
-        this.chat.set(loadedChat)
+        this.chat.set(this.sortMessagesByDate(loadedChat))
         this.loading.set(false)
         setTimeout(() => this.scrollToBottom(), 100);
       },
@@ -106,28 +111,28 @@ export class ChatPageComponent implements OnInit {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
+    const optionsTime: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    };
+
     if (messageDate.getTime() === today.getTime()) {
-      // Show only time for today's messages
-      return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
+      return date.toLocaleTimeString('en-US', optionsTime);
     } else {
-      // Show date and time for older messages
-      return date.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
+      return date.toLocaleString('en-US', optionsDate);
     }
   }
 
+
   isOwnMessage(message: Message): boolean {
-    // This would need to be implemented based on current user ID
-    // For now, we'll assume we can determine this from the message
     return message.sender.id === this.chat()?.user.id;
   }
 }

@@ -32,12 +32,20 @@ public class ChatService {
 	ChatMapper chatMapper;
 	MessageMapper messageMapper;
 
+	public ChatDto getChatIfMember(long userId, long chatId) {
+		Chat chat = chatRepository.findById(chatId).orElse(null);
+		if (chat == null || (chat.getUser().getId() != userId && chat.getProduct().getOwner().getId() != userId)) {
+			return null;
+		}
+		return chatMapper.toDto(chat);
+	}
+
 	public Iterable<ChatDto> getUserChats(User user) {
 		List<ChatDto> chats = new ArrayList<>();
 
 		User userWithProducts = userRepository.findByIdWithOwnedProducts(user.getId());
 		userWithProducts.getOwnedProducts().forEach(product ->
-				chatRepository.findByProduct(product).forEach(chat ->
+				chatRepository.findByProduct(product.getId()).forEach(chat ->
 					chats.add(chatMapper.toDto(chat))
 					)
 				);
