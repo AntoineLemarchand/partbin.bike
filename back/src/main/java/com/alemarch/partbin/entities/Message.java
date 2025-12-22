@@ -1,6 +1,7 @@
 package com.alemarch.partbin.entities;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +21,7 @@ public class Message {
 	private String content;
 
 	@Column(name = "sent_on")
-	private Date sentOn;
+	private LocalDateTime sentOn;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")

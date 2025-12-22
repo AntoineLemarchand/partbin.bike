@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService, Chat, Message } from '../../services/chat-service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { UserDto } from '../../../../shared/models/UserDto';
 
 @Component({
   selector: 'app-chat-page',
@@ -12,22 +14,24 @@ import { ChatService, Chat, Message } from '../../services/chat-service';
   imports: [CommonModule, FormsModule]
 })
 export class ChatPageComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private data = toSignal(this.route.data);
+  user = computed(() => this.data()?.['profile'] as UserDto | null);
+
+
+  chatService = inject(ChatService)
+
   chat = signal<Chat | null>(null);
   loading = signal<boolean>(true);
   error = signal<boolean>(false);
   newMessage = signal<string>('');
   sending = signal<boolean>(false);
-
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
-
-  constructor(
-    private route: ActivatedRoute,
-    private chatService: ChatService
-  ) {}
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('productId');
     const chatId = this.route.snapshot.paramMap.get('chatId');
+
 
     if (productId) {
       this.loadChatByProductId(Number(productId));
@@ -133,6 +137,7 @@ export class ChatPageComponent implements OnInit {
 
 
   isOwnMessage(message: Message): boolean {
-    return message.sender.id === this.chat()?.user.id;
+    console.log(this.user());
+    return message.sender.id === this.user()?.id
   }
 }

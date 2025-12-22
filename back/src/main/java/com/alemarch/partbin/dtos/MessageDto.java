@@ -1,6 +1,6 @@
 package com.alemarch.partbin.dtos;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public class MessageDto {
 	private String content;
 
 	@NotNull
-	private Date sentOn;
+	private LocalDateTime sentOn;
 	
 	@NotNull
 	private UserDto sender;

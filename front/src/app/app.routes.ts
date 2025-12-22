@@ -11,30 +11,33 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./features/home/home.routes').then(m => m.HOME_ROUTES)
+        import('./features/home/home.routes').then(m => m.HOME_ROUTES)
       },
       {
         path: 'auth',
         loadChildren: () =>
-          import('./features/auth/auth.routes').then(m => m.HOME_ROUTES)
+        import('./features/auth/auth.routes').then(m => m.HOME_ROUTES)
       },
       {
         path: 'user',
         loadChildren: () =>
-          import('./features/user/user.routes').then(m => m.HOME_ROUTES),
-        canActivate: [authGuard],
+        import('./features/user/user.routes').then(m => m.HOME_ROUTES),
+          canActivate: [authGuard],
       },
       {
         path: 'product',
         loadChildren: () =>
-          import('./features/product/product.routes').then(m => m.productRoutes),
+        import('./features/product/product.routes').then(m => m.productRoutes),
       },
-      {
-        path: 'chat',
-        loadChildren: () =>
+        {
+          path: 'chat',
+          resolve: {
+            profile: profileResolver,
+          },
+          loadChildren: () =>
           import('./features/chat/chat.routes').then(m => m.chatRoutes),
-        canActivate: [authGuard],
-      },
+            canActivate: [authGuard],
+        },
     ]
   }
 ];

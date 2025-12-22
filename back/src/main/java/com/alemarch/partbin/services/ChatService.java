@@ -1,6 +1,7 @@
 package com.alemarch.partbin.services;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class ChatService {
 			return null;
 		}
 		Message newMessage = new Message();
-		newMessage.setSentOn(new Date(System.currentTimeMillis()));
+		newMessage.setSentOn(LocalDateTime.now());
 		newMessage.setContent(content);
 		newMessage.setSender(user);
 		newMessage.setChat(chat);
