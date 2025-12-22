@@ -17,11 +17,14 @@ export interface Chat {
   product: {
     id: number;
     name: string;
-    ownerId: number;
+    owner: {
+      id: number,
+      name: string
+    }
   };
   user: {
     id: number;
-    name: string;
+    displayName: string;
   };
   messages: Message[];
 }

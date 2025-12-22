@@ -26,6 +26,7 @@ export class ChatPageComponent implements OnInit {
   error = signal<boolean>(false);
   newMessage = signal<string>('');
   sending = signal<boolean>(false);
+  correspundantName = signal<string>("...")
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
   ngOnInit(): void {
@@ -51,6 +52,7 @@ export class ChatPageComponent implements OnInit {
   private loadChatByProductId(productId: number): void {
     this.chatService.getOrCreateChat(productId).subscribe({
       next: (loadedChat) => {
+        this.correspundantName.set(loadedChat.user.displayName == this.user()?.displayName ? loadedChat.product.owner.name : loadedChat.user.displayName)
         this.chat.set(this.sortMessagesByDate(loadedChat))
         this.loading.set(false)
         setTimeout(() => this.scrollToBottom(), 100);
@@ -65,6 +67,7 @@ export class ChatPageComponent implements OnInit {
   private loadChatById(chatId: number): void {
     this.chatService.getChatById(chatId).subscribe({
       next: (loadedChat) => {
+        this.correspundantName.set(loadedChat.user.displayName == this.user()?.displayName ? loadedChat.product.owner.name : loadedChat.user.displayName)
         this.chat.set(this.sortMessagesByDate(loadedChat))
         this.loading.set(false)
         setTimeout(() => this.scrollToBottom(), 100);
@@ -137,7 +140,6 @@ export class ChatPageComponent implements OnInit {
 
 
   isOwnMessage(message: Message): boolean {
-    console.log(this.user());
     return message.sender.id === this.user()?.id
   }
 }

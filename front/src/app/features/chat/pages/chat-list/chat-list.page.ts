@@ -28,7 +28,7 @@ export class ChatListPageComponent implements OnInit {
         // Separate chats based on whether they're about user's products
         const myProducts = chats.filter(chat => this.isMyProductChat(chat));
         const otherProducts = chats.filter(chat => !this.isMyProductChat(chat));
-        
+
         this.myProductChats.set(myProducts);
         this.otherProductChats.set(otherProducts);
         this.loading.set(false);
@@ -42,7 +42,7 @@ export class ChatListPageComponent implements OnInit {
 
   private isMyProductChat(chat: Chat): boolean {
     // Check if the current user owns the product
-    return chat.product.ownerId === chat.user.id;
+    return chat.product.owner.id === chat.user.id;
   }
 
   getLastMessage(chat: Chat): string {
@@ -50,14 +50,14 @@ export class ChatListPageComponent implements OnInit {
       return 'No messages yet';
     }
     const lastMessage = chat.messages[chat.messages.length - 1];
-    return lastMessage.content.length > 50 
+    return lastMessage.content.length > 50
       ? lastMessage.content.substring(0, 50) + '...'
       : lastMessage.content;
   }
 
   formatTimestamp(timestamp: string): string {
     if (!timestamp) return '';
-    
+
     const date = new Date(timestamp);
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
