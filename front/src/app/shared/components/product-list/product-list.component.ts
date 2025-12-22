@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Product } from '../../../features/product/services/product-service';
 
 @Component({
@@ -16,4 +17,10 @@ export class ProductListComponent {
   @Input() emptyMessage = 'No products available';
   @Input() emptyDescription = 'Be the first to add a product to the marketplace!';
   @Input() loadingMessage = 'Loading products...';
+
+  constructor(private router: Router) {}
+
+  viewProduct(productId: number): void {
+    this.router.navigate(['/product', productId]);
+  }
 }

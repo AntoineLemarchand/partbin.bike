@@ -45,6 +45,11 @@ public class ProductService {
 	}
 
 	@Transactional
+	public Product getProductById(long id) {
+		return productRepository.findById(id).orElse(null);
+	}
+
+	@Transactional
 	public Product createProduct(CreateProductDto productDto, User owner) {
 		User managedOwner = userRepository.findById(owner.getId())
 			.orElseThrow(() -> new RuntimeException("User not found with id: " + owner.getId()));

@@ -59,6 +59,10 @@ export class ProductService {
     return this.http.delete<string>(`${this.apiUrl}/wishlist/${productId}`, {withCredentials: true});
   }
 
+  getProductById(productId: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${productId}`, {withCredentials: true});
+  }
+
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>('http://localhost:8080/categories', {withCredentials: true});
   }

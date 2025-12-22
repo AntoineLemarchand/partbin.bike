@@ -1,0 +1,51 @@
+<div class="product-page">
+  @if (loading) {
+    <div class="loading">
+      <p>Loading product details...</p>
+    </div>
+  }
+
+  @if (error) {
+    <div class="error">
+      <h2>Product Not Found</h2>
+      <p>The product you're looking for doesn't exist or has been removed.</p>
+      <button class="back-button" (click)="goBack()">Go Back</button>
+    </div>
+  }
+
+  @if (product() && !loading && !error) {
+    <div class="product-container">
+      <button class="back-button" (click)="goBack()">← Back</button>
+
+      <div class="product-header">
+        <h1>{{ product()?.name }}</h1>
+        <span class="product-id">#{{ product()?.id }}</span>
+      </div>
+
+      <div class="product-details">
+        <div class="product-info">
+          <div class="product-category">
+            <span class="category-label">Category:</span>
+            <span class="category-name">{{ product()?.category?.name }}</span>
+          </div>
+
+          <div class="product-owner">
+            <span class="owner-label">Seller:</span>
+            <span class="owner-name">{{ product()?.owner?.name }}</span>
+          </div>
+        </div>
+
+        <div class="product-description">
+          <h2>Description</h2>
+          <p>{{ product()?.description }}</p>
+        </div>
+
+        <div class="product-actions">
+          <button class="contact-button" (click)="contactSeller()">
+            Contact Seller
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

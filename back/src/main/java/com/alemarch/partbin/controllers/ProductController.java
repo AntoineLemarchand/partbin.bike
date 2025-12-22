@@ -23,8 +23,9 @@ import com.alemarch.partbin.services.ProductService;
 import com.alemarch.partbin.services.UserService;
 
 import com.alemarch.partbin.dtos.SortParam;
+import com.alemarch.partbin.entities.Product;
 import com.alemarch.partbin.entities.User;
-
+import com.alemarch.partbin.mappers.ProductMapper;
 
 import lombok.AllArgsConstructor;
 import tools.jackson.core.type.TypeReference;
@@ -36,6 +37,7 @@ import tools.jackson.databind.ObjectMapper;
 public class ProductController {
 	private final ProductService productService;
 	private final UserService userService;
+	private final ProductMapper productMapper;
 
 	@GetMapping
 	public ResponseEntity<Iterable<ProductDto>> getProducts(
@@ -52,6 +54,17 @@ public class ProductController {
 			}
 		}
 		return ResponseEntity.ok(productService.getProducts(filterMap, sort));
+	}
+
+	@GetMapping("/{productId}")
+	public ResponseEntity<ProductDto> getProductById(
+			@PathVariable(required = true) long productId
+	) {
+		Product product = productService.getProductById(productId);
+		if (product == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(productMapper.toDto(product));
 	}
 
 	@PostMapping
