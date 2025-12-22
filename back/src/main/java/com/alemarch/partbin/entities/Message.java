@@ -1,10 +1,24 @@
 package com.alemarch.partbin.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.sql.Date;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Setter
+@Entity
 public class Message {
-	private String text;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
+	@Column(name = "content")
+	private String content;
+
+	@Column(name = "sent_on")
+	private Date sentOn;
 }

@@ -1,5 +1,7 @@
 package com.alemarch.partbin.entities;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,4 +31,10 @@ public class Product {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "owner_id")
 	private User owner;
+
+	@OneToMany(orphanRemoval = true)
+	private Set<Chat> chats;
+
+	@Column(name = "is_deleted")
+	private Boolean isDeleted;
 }
