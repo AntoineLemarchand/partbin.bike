@@ -1,6 +1,8 @@
 package com.alemarch.partbin.services;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,21 @@ public class ChatService {
 
 	ChatMapper chatMapper;
 	MessageMapper messageMapper;
+
+	public Iterable<ChatDto> getUserChats(User user) {
+		List<ChatDto> chats = new ArrayList<>();
+
+		User userWithProducts = userRepository.findByIdWithOwnedProducts(user.getId());
+		userWithProducts.getOwnedProducts().forEach(product ->
+				chatRepository.findByProduct(product).forEach(chat ->
+					chats.add(chatMapper.toDto(chat))
+					)
+				);
+		chatRepository.findByUser(user.getId())
+			.forEach(chat -> chats.add(chatMapper.toDto(chat)));
+
+		return chats;
+	}
 
 	public MessageDto addMessage(long userId, long chatId, String content) {
 		User user = userRepository.findById(userId)

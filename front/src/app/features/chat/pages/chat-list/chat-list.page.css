@@ -1,0 +1,145 @@
+.chat-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.chat-list-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-list-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.chats-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.chat-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.section-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #495057;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #007bff;
+}
+
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease;
+}
+
+.chat-item:hover {
+  background: #f1f3f4;
+  border-color: #007bff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-product-name {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #212529;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-last-message {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-meta {
+  text-align: right;
+  margin-left: 16px;
+}
+
+.chat-time {
+  font-size: 12px;
+  color: #868e96;
+  white-space: nowrap;
+}
+
+.loading,
+.error,
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.empty-state {
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chat-list-container {
+    padding: 16px;
+  }
+  
+  .chat-section {
+    padding: 16px;
+  }
+  
+  .chat-item {
+    padding: 12px;
+  }
+  
+  .chat-product-name {
+    font-size: 15px;
+  }
+  
+  .chat-last-message {
+    font-size: 13px;
+  }
+}

@@ -14,6 +14,8 @@ import com.alemarch.partbin.services.ChatService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 @RestController
@@ -22,6 +24,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ChatController {
 
 	ChatService chatService;
+
+	@GetMapping
+	public ResponseEntity<Iterable<ChatDto>> getUserChats(Authentication authentication) {
+		Iterable<ChatDto> chats = chatService.getUserChats((User)authentication.getPrincipal());
+		return ResponseEntity.ok(chats);
+	}
 
 	@PostMapping("/message/{chatId}")
 	public ResponseEntity<MessageDto> sendMessage(

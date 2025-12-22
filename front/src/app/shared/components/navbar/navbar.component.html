@@ -6,7 +6,7 @@
   <div>
     @if(isConnected()) {
       <a href="user"><ng-icon name="matPersonOutline" /></a>
-      <a href="chats"><ng-icon name="matChatOutline" /></a>
+      <a href="/chat"><ng-icon name="matChatOutline" /></a>
       <button (click)="logout()"><ng-icon name="matLogoutOutline" /></button>
     } @else {
       <a href="/auth/login"><ng-icon name="matLoginOutline" /></a>

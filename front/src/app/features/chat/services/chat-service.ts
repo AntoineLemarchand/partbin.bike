@@ -17,6 +17,7 @@ export interface Chat {
   product: {
     id: number;
     name: string;
+    ownerId: number;
   };
   user: {
     id: number;

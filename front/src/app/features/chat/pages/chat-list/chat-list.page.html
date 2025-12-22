@@ -1,0 +1,59 @@
+<div class="chat-list-container">
+  <header class="chat-list-header">
+    <h1>Chats</h1>
+  </header>
+
+  @if (loading()) {
+    <div class="loading">Loading chats...</div>
+  } @else if (error()) {
+    <div class="error">Failed to load chats. Please try again.</div>
+  } @else {
+    <div class="chats-sections">
+      <!-- My Products Section -->
+      @if (myProductChats().length > 0) {
+        <section class="chat-section">
+          <h2 class="section-title">My Products</h2>
+          <div class="chat-list">
+            @for (chat of myProductChats(); track chat.id) {
+              <a [routerLink]="['/chat', chat.id]" class="chat-item">
+                <div class="chat-info">
+                  <h3 class="chat-product-name">{{ chat.product.name }}</h3>
+                  <p class="chat-last-message">{{ getLastMessage(chat) }}</p>
+                </div>
+                <div class="chat-meta">
+                  <span class="chat-time">{{ formatTimestamp(chat.messages[chat.messages.length - 1]?.timestamp || '') }}</span>
+                </div>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Other Products Section -->
+      @if (otherProductChats().length > 0) {
+        <section class="chat-section">
+          <h2 class="section-title">Other Products</h2>
+          <div class="chat-list">
+            @for (chat of otherProductChats(); track chat.id) {
+              <a [routerLink]="['/chat', chat.id]" class="chat-item">
+                <div class="chat-info">
+                  <h3 class="chat-product-name">{{ chat.product.name }}</h3>
+                  <p class="chat-last-message">{{ getLastMessage(chat) }}</p>
+                </div>
+                <div class="chat-meta">
+                  <span class="chat-time">{{ formatTimestamp(chat.messages[chat.messages.length - 1]?.timestamp || '') }}</span>
+                </div>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
+      @if (myProductChats().length === 0 && otherProductChats().length === 0) {
+        <div class="empty-state">
+          <p>No chats yet. Start a conversation about a product!</p>
+        </div>
+      }
+    </div>
+  }
+</div>
