@@ -45,10 +45,8 @@ export class ProductPageComponent implements OnInit {
   }
 
   contactSeller(): void {
-    if (this.product) {
-      this.router.navigate(['/messages'], {
-        queryParams: { userId: this.product()?.owner.id }
-      });
+    if (this.product()) {
+      this.router.navigate(['/chat/product', this.product()!.id]);
     }
   }
 

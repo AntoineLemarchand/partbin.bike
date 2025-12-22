@@ -21,4 +21,13 @@ public class Message {
 
 	@Column(name = "sent_on")
 	private Date sentOn;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User sender;
+
+	@ManyToOne
+	@JoinColumn(name = "chat_id")
+	private Chat chat;
+
 }

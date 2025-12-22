@@ -29,6 +29,12 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/product/product.routes').then(m => m.productRoutes),
       },
+      {
+        path: 'chat',
+        loadChildren: () =>
+          import('./features/chat/chat.routes').then(m => m.chatRoutes),
+        canActivate: [authGuard],
+      },
     ]
   }
 ];

@@ -24,10 +24,11 @@ public class Chat {
 	@JoinColumn(name = "product_id")
 	private Product product;
 
-	@OneToMany(mappedBy = "id", orphanRemoval = true)
-	private Set<Message> messages;
-
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	@OneToMany(mappedBy = "chat", orphanRemoval = true, cascade = CascadeType.ALL)
+	private Set<Message> messages;
+
 }

@@ -1,0 +1,73 @@
+<div class="chat-page">
+  @if (loading()) {
+    <div class="loading">
+      <p>Loading chat...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error">
+      <h2>Chat Not Found</h2>
+      <p>The chat you're looking for doesn't exist or has been removed.</p>
+      <button class="back-button" (click)="goBack()">Go Back</button>
+    </div>
+  }
+
+  @if (chat() && !loading() && !error()) {
+    <div class="chat-container">
+      <div class="chat-header">
+        <button class="back-button" (click)="goBack()">← Back</button>
+        <div class="chat-info">
+          <h2>{{ chat()!.product.name }}</h2>
+          <span class="chat-with">Chat with {{ chat()!.user.name }}</span>
+        </div>
+      </div>
+
+      <div class="messages-container" #messagesContainer>
+        @for (message of chat()!.messages; track message.id) {
+          <div class="message"
+               [class.own-message]="isOwnMessage(message)"
+               [class.other-message]="!isOwnMessage(message)">
+            <div class="message-content">
+              <p>{{ message.content }}</p>
+              <span class="message-time">{{ formatTimestamp(message.timestamp) }}</span>
+            </div>
+            @if (!isOwnMessage(message)) {
+              <div class="message-sender">
+                <small>{{ message.sender.name }}</small>
+              </div>
+            }
+          </div>
+        }
+
+        @if (chat()!.messages.length === 0) {
+          <div class="no-messages">
+            <p>No messages yet. Start the conversation!</p>
+          </div>
+        }
+      </div>
+
+      <div class="message-input-container">
+        <div class="input-group">
+          <input
+            type="text"
+            [(ngModel)]="newMessage"
+            (keyup.enter)="sendMessage()"
+            placeholder="Type a message..."
+            class="message-input"
+            [disabled]="sending()">
+          <button
+            class="send-button"
+            (click)="sendMessage()"
+            [disabled]="!newMessage().trim() || sending()">
+            @if (sending()) {
+              <span>Sending...</span>
+            } @else {
+              <span>Send</span>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

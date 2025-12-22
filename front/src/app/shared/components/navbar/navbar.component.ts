@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { matPersonOutline } from "@ng-icons/material-icons/baseline";
-import { matLoginOutline, matLogoutOutline, matShoppingBasketOutline } from "@ng-icons/material-icons/outline";
+import { matChatOutline, matLoginOutline, matLogoutOutline, matShoppingBasketOutline } from "@ng-icons/material-icons/outline";
 import { AuthService } from "../../../features/auth/services/auth-service";
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from "../../../features/auth/services/auth-service";
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   imports: [ NgIcon ],
-  viewProviders: [provideIcons({ matPersonOutline, matLoginOutline, matLogoutOutline, matShoppingBasketOutline})]
+  viewProviders: [provideIcons({ matPersonOutline, matLoginOutline, matLogoutOutline, matShoppingBasketOutline, matChatOutline})]
 })
 
 export class NavbarComponent {
