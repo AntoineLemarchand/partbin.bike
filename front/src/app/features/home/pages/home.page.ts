@@ -28,7 +28,6 @@ export class HomePage implements OnInit {
 
   loadProducts() {
     this.loading.set(true)
-    console.log('Loading products...');
     this.productService.getProducts().subscribe({
       next: (products) => {
         this.products.set(products)

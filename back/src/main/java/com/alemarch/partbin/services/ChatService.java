@@ -59,7 +59,7 @@ public class ChatService {
 	public MessageDto addMessage(long userId, long chatId, String content) {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-		Chat chat = chatRepository.findById(chatId).orElse(null);
+		Chat chat = chatRepository.findByIdWithMessages(chatId).orElse(null);
 		if (chat == null) {
 			return null;
 		}

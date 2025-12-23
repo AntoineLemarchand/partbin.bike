@@ -25,7 +25,6 @@ export class ChatListPageComponent implements OnInit {
   private loadChats(): void {
     this.chatService.getUserChats().subscribe({
       next: (chats) => {
-        // Separate chats based on whether they're about user's products
         const myProducts = chats.filter(chat => this.isMyProductChat(chat));
         const otherProducts = chats.filter(chat => !this.isMyProductChat(chat));
 
@@ -41,7 +40,6 @@ export class ChatListPageComponent implements OnInit {
   }
 
   private isMyProductChat(chat: Chat): boolean {
-    // Check if the current user owns the product
     return chat.product.owner.id === chat.user.id;
   }
 

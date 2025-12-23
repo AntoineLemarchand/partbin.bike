@@ -38,9 +38,7 @@ export class LoginForm {
       this.authService.submitLoginForm(this.loginForm.value)
       .subscribe({
         next: () => {
-            console.log("setting authenticated")
             this.authService.isAuthenticated.set(true)
-            console.log("redirecting")
             this.router.navigateByUrl('/user')
         },
         error: () => {

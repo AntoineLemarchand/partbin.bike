@@ -19,7 +19,7 @@
         <button class="back-button" (click)="goBack()">← Back</button>
         <div class="chat-info">
           <h2>{{ chat()!.product.name }}</h2>
-          <span class="chat-with">Chat with {{ correspundantName() }}</span>
+          <span class="chat-with">Chat with {{ correspondantName() }}</span>
         </div>
       </div>
 
@@ -55,16 +55,12 @@
             (keyup.enter)="sendMessage()"
             placeholder="Type a message..."
             class="message-input"
-            [disabled]="sending()">
+            >
           <button
             class="send-button"
             (click)="sendMessage()"
-            [disabled]="!newMessage().trim() || sending()">
-            @if (sending()) {
-              <span>Sending...</span>
-            } @else {
-              <span>Send</span>
-            }
+            [disabled]="!newMessage().trim()">
+            <span>Send</span>
           </button>
         </div>
       </div>

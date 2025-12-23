@@ -61,7 +61,7 @@ public class ProductService {
 			.name(productDto.getName())
 			.description(productDto.getDescription())
 			.category(category)
-			.owner(managedOwner) // Use managed owner
+			.owner(managedOwner)
 			.build();
 
 		Product newProduct = productRepository.save(product);

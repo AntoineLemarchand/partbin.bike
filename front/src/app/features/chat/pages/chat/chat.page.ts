@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ChatService, Chat, Message } from '../../services/chat-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserDto } from '../../../../shared/models/UserDto';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat-page',
@@ -18,6 +19,7 @@ export class ChatPageComponent implements OnInit {
   private data = toSignal(this.route.data);
   user = computed(() => this.data()?.['profile'] as UserDto | null);
 
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
   chatService = inject(ChatService)
 
@@ -25,81 +27,56 @@ export class ChatPageComponent implements OnInit {
   loading = signal<boolean>(true);
   error = signal<boolean>(false);
   newMessage = signal<string>('');
-  sending = signal<boolean>(false);
-  correspundantName = signal<string>("...")
-  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  correspondantName = signal<string>("...")
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('productId');
     const chatId = this.route.snapshot.paramMap.get('chatId');
 
-
     if (productId) {
-      this.loadChatByProductId(Number(productId));
+      this.loadChat(this.chatService.getOrCreateChat(Number(productId)))
     } else if (chatId) {
-      this.loadChatById(Number(chatId));
+      this.loadChat(this.chatService.getChatById(Number(chatId)))
     } else {
       this.error.set(true);
       this.loading.set(false);
     }
   }
 
-  private sortMessagesByDate(chat: Chat): Chat {
-    chat.messages.sort((a, b) => new Date(a.sentOn).getTime() - new Date(b.sentOn).getTime());
-    return chat;
-  }
-
-  private loadChatByProductId(productId: number): void {
-    this.chatService.getOrCreateChat(productId).subscribe({
+  private loadChat(list: Observable<Chat>) {
+    list.subscribe({
       next: (loadedChat) => {
-        this.correspundantName.set(loadedChat.user.displayName == this.user()?.displayName ? loadedChat.product.owner.name : loadedChat.user.displayName)
-        this.chat.set(this.sortMessagesByDate(loadedChat))
+        this.correspondantName.set(loadedChat.user.displayName == this.user()?.displayName ? loadedChat.product.owner.name : loadedChat.user.displayName)
+        this.chat.set(this.chatService.sortMessagesByDate(loadedChat))
         this.loading.set(false)
         setTimeout(() => this.scrollToBottom(), 100);
+        this.chatService.listen(this.chat()!.id, (message: Message) => this.addMessage(message))
       },
       error: () => {
         this.error.set(true)
         this.loading.set(false)
       }
-    });
+    })
   }
 
-  private loadChatById(chatId: number): void {
-    this.chatService.getChatById(chatId).subscribe({
-      next: (loadedChat) => {
-        this.correspundantName.set(loadedChat.user.displayName == this.user()?.displayName ? loadedChat.product.owner.name : loadedChat.user.displayName)
-        this.chat.set(this.sortMessagesByDate(loadedChat))
-        this.loading.set(false)
-        setTimeout(() => this.scrollToBottom(), 100);
-      },
-      error: () => {
-        this.error.set(true)
-        this.loading.set(false)
-      }
-    });
+  addMessage(message: Message): void {
+    const currentChat = this.chat();
+    if (currentChat && currentChat.messages) {
+      const updatedMessages = [...currentChat.messages, message];
+      this.chat.set({
+        ...currentChat,
+        messages: updatedMessages
+      });
+      setTimeout(() => this.scrollToBottom(), 100);
+    }
   }
 
   sendMessage(): void {
-    if (!this.newMessage().trim() || !this.chat() || this.sending()) {
+    if (!this.newMessage().trim() || !this.chat()) {
       return;
     }
-
-    this.sending.set(true);
-    this.chatService.sendMessage(this.chat()!.id, this.newMessage().trim()).subscribe({
-      next: (message) => {
-        const currentChat = this.chat();
-        if (currentChat) {
-          currentChat.messages.push(message);
-          this.chat.set(currentChat);
-          this.newMessage.set('');
-          setTimeout(() => this.scrollToBottom(), 100);
-        }
-        this.sending.set(false);
-      },
-      error: () => {
-        this.sending.set(false);
-      }
-    });
+    this.chatService.sendMessage(this.chat()!.id, this.newMessage().trim())
+    this.newMessage.set("")
   }
 
   private scrollToBottom(): void {

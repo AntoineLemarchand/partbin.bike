@@ -21,4 +21,8 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 	@EntityGraph
 	@Query("SELECT c from Chat c WHERE c.user.id = :userId")
 	Iterable<Chat> findByUser(long userId);
+
+	@EntityGraph(attributePaths = {"messages"})
+	@Query("SELECT c FROM Chat c WHERE c.id = :id")
+	Optional<Chat> findByIdWithMessages(@Param("id") Long id);
 }

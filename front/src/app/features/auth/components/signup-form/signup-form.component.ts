@@ -42,7 +42,6 @@ export class SignupForm {
   private router = inject(Router)
 
   onSubmit() {
-    console.log(this.signupForm)
     this.submitted = true;
     if (this.signupForm.valid) {
       this.errorMessage = null;
