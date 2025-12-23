@@ -1,5 +1,7 @@
 package com.alemarch.partbin.dtos;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +14,5 @@ public class ProductDto {
 	private String description;
 	private CategoryDto category;
 	private OwnerDto owner;
+	private Set<String> imagesUrl;
 }
