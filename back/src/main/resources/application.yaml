@@ -1,6 +1,6 @@
 partbin:
   upload:
-    directory: /app/uploads/products
+    directory: ./app/uploads/products
     max-images-per-product: 10
     allowed-types: jpg,jpeg,png,webp
     max-file-size: 10MB
@@ -23,7 +23,7 @@ spring:
           dialect: org.hibernate.dialect.PostgreSQLDialect
   web:
     resources:
-      static-locations: file:uploads/, classpath:/static/
+      static-locations: file:./app/uploads/, classpath:/static/
   servlet:
     multipart:
       max-file-size: 10MB

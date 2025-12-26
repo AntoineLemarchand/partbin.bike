@@ -45,7 +45,8 @@ public class SecurityConfiguration {
 			"/auth/**",
 			"/doc",
 			"/swagger-ui/**",
-			"/v3/api-docs/**"
+			"/v3/api-docs/**",
+			"/uploads/**"
 		};
 
 		return http

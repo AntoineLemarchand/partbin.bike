@@ -24,7 +24,8 @@ export interface Product {
   owner: {
     id: number,
     name: string
-  }
+  },
+  imagesUrl: string[]
 }
 
 @Injectable({
@@ -65,5 +66,15 @@ export class ProductService {
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>('http://localhost:8080/categories', {withCredentials: true});
+  }
+
+  uploadImages(productId: number, files: File[]): Observable<string[]> {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+    return this.http.post<string[]>(`${this.apiUrl}/${productId}/images`, formData, {withCredentials: true});
+  }
+
+  deleteImage(productId: number, imagePath: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${productId}/images?imagePath=${encodeURIComponent(imagePath)}`, {withCredentials: true});
   }
 }

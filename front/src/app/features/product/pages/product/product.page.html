@@ -23,6 +23,50 @@
       </div>
 
       <div class="product-details">
+        <div class="product-images">
+          @if (product()?.imagesUrl && product()!.imagesUrl.length > 0) {
+            <div class="image-gallery">
+              @for (image of product()?.imagesUrl; track image) {
+                <div class="image-item">
+                  <img [src]="getImageUrl(image)" [alt]="'Product image'" />
+                  <button class="delete-image" (click)="deleteImage(image)" title="Delete image">×</button>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="no-images">
+              <p>No images available for this product</p>
+            </div>
+          }
+          
+          <div class="image-upload">
+            <h3>Add Images</h3>
+            <input 
+              type="file" 
+              multiple 
+              accept="image/*"
+              (change)="onFileSelect($event)"
+            />
+            @if (selectedFiles.length > 0) {
+              <div class="selected-files">
+                <p>{{ selectedFiles.length }} file(s) selected</p>
+                <button 
+                  class="upload-button" 
+                  (click)="uploadImages()" 
+                  [disabled]="uploadProgress"
+                >
+                  {{ uploadProgress ? 'Uploading...' : 'Upload Images' }}
+                </button>
+              </div>
+            }
+            @if (uploadMessage) {
+              <div class="upload-message" [class.error]="uploadMessage.includes('Failed')">
+                {{ uploadMessage }}
+              </div>
+            }
+          </div>
+        </div>
+
         <div class="product-info">
           <div class="product-category">
             <span class="category-label">Category:</span>

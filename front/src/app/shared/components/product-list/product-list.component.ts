@@ -23,4 +23,10 @@ export class ProductListComponent {
   viewProduct(productId: number): void {
     this.router.navigate(['/product', productId]);
   }
+
+  getImageUrl(imagePath: string): string {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http')) return imagePath;
+    return `http://localhost:8080/products/${imagePath}`;
+  }
 }
