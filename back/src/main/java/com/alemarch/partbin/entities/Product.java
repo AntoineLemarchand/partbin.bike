@@ -1,5 +1,7 @@
 package com.alemarch.partbin.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -37,4 +39,9 @@ public class Product {
 
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
+
+	@ElementCollection
+	@CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+	@Column(name = "image_path")
+	private List<String> imagePaths;
 }

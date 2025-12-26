@@ -25,6 +25,18 @@
       }
     </div>
 
+    <div class="field">
+      <label for="images">Product Images (optional)</label>
+      <input
+        type="file"
+        id="images"
+        name="images"
+        multiple
+        accept="image/*"
+        (change)="onFileSelect($event)"
+      />
+    </div>
+
     <div>
       <button type="submit">Create Product</button>
     </div>

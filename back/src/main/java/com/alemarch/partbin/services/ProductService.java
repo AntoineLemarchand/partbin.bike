@@ -1,11 +1,13 @@
 package com.alemarch.partbin.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alemarch.partbin.dtos.CreateProductDto;
 import com.alemarch.partbin.dtos.ProductDto;
@@ -34,6 +36,8 @@ public class ProductService {
 	private CategoryRepository categoryRepository;
 	private ProductMapper productMapper;
 	private UserRepository userRepository;
+
+	private final ImageStorageService imageStorageService;
 
 	@Transactional
 	public Iterable<ProductDto> getProducts(Map<String, Object> filters, SortParam sort) {
@@ -76,5 +80,56 @@ public class ProductService {
 		Map<String, Object> filters = new HashMap<>();
 		filters.put("owner.id", user.getId());
 		return getProducts(filters, null);
+	}
+
+	@Transactional
+	public List<String> addImages(Long productId, List<MultipartFile> files, User user) {
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new RuntimeException("Product not found"));
+
+		if (!product.getOwner().getId().equals(user.getId())) {
+			throw new RuntimeException("Only the product owner can add images");
+		}
+
+		List<String> newImagePaths = imageStorageService.saveImages(files, productId);
+
+		List<String> currentImages = product.getImagePaths();
+		if (currentImages == null) {
+			currentImages = new ArrayList<>();
+		}
+		currentImages.addAll(newImagePaths);
+		product.setImagePaths(currentImages);
+
+		return productRepository.save(product).getImagePaths();
+	}
+
+	@Transactional
+	public void removeImage(Long productId, String imagePath, User user) {
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new RuntimeException("Product not found"));
+
+		if (!product.getOwner().getId().equals(user.getId())) {
+			throw new RuntimeException("Only the product owner can delete images");
+		}
+
+		List<String> images = product.getImagePaths();
+		if (images != null) {
+			images.remove(imagePath);
+			product.setImagePaths(images);
+			productRepository.save(product);
+		}
+
+		imageStorageService.deleteImage(imagePath);
+	}
+	
+	@Transactional
+	public void deleteProductAndImages(Long productId) {
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new RuntimeException("Product not found"));
+
+		if (product.getImagePaths() != null) {
+			imageStorageService.deleteProductImages(productId);
+		}
+		productRepository.delete(product);
 	}
 }
