@@ -1,7 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService, Product } from '../../services/product-service';
+import { ProductService, Product, UpdateProductRequest } from '../../services/product-service';
 import { AuthService } from '../../../auth/services/auth-service';
 import { UserDto } from '../../../../shared/models/UserDto';
 
@@ -10,7 +11,7 @@ import { UserDto } from '../../../../shared/models/UserDto';
   standalone: true,
   templateUrl: './product.page.html',
   styleUrls: ['./product.page.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class ProductPageComponent implements OnInit {
   product = signal<Product | null>(null);
@@ -21,6 +22,11 @@ export class ProductPageComponent implements OnInit {
   uploadMessage: string | null = null;
   currentUser = signal<UserDto | null>(null);
   isOwner = signal<boolean>(false);
+  isEditing = signal<boolean>(false);
+  editedName = signal<string>('');
+  editedDescription = signal<string>('');
+  updateMessage: string | null = null;
+  updateProgress = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -135,5 +141,52 @@ export class ProductPageComponent implements OnInit {
     if (imagePath.startsWith('http')) return imagePath;
     // Prepend the backend API base URL
     return `http://localhost:8080/products/${imagePath}`;
+  }
+
+  startEditing(): void {
+    const currentProduct = this.product();
+    if (currentProduct) {
+      this.editedName.set(currentProduct.name);
+      this.editedDescription.set(currentProduct.description);
+      this.isEditing.set(true);
+      this.updateMessage = null;
+    }
+  }
+
+  cancelEditing(): void {
+    this.isEditing.set(false);
+    this.editedName.set('');
+    this.editedDescription.set('');
+    this.updateMessage = null;
+  }
+
+  saveChanges(): void {
+    const currentProduct = this.product();
+    if (!currentProduct) return;
+
+    const updateData: UpdateProductRequest = {
+      name: this.editedName(),
+      description: this.editedDescription()
+    };
+
+    this.updateProgress = true;
+    this.updateMessage = null;
+
+    this.productService.updateProduct(currentProduct.id, updateData).subscribe({
+      next: (updatedProduct) => {
+        this.product.set(updatedProduct);
+        this.isEditing.set(false);
+        this.updateMessage = 'Product updated successfully!';
+        this.updateProgress = false;
+        
+        setTimeout(() => {
+          this.updateMessage = null;
+        }, 3000);
+      },
+      error: () => {
+        this.updateMessage = 'Failed to update product. Please try again.';
+        this.updateProgress = false;
+      }
+    });
   }
 }

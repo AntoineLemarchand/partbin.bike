@@ -18,8 +18,25 @@
       <button class="back-button" (click)="goBack()">← Back</button>
 
       <div class="product-header">
-        <h1>{{ product()?.name }}</h1>
-        <span class="product-id">#{{ product()?.id }}</span>
+        @if (!isEditing()) {
+          <div class="product-title-display">
+            <h1>{{ product()?.name }}</h1>
+            <span class="product-id">#{{ product()?.id }}</span>
+            @if (isOwner()) {
+              <button class="edit-button" (click)="startEditing()" title="Edit product">✏️</button>
+            }
+          </div>
+        } @else {
+          <div class="product-title-edit">
+            <input 
+              type="text" 
+              [(ngModel)]="editedName" 
+              class="edit-title-input"
+              placeholder="Product name"
+            />
+            <span class="product-id">#{{ product()?.id }}</span>
+          </div>
+        }
       </div>
 
       <div class="product-details">
@@ -84,14 +101,53 @@
         </div>
 
         <div class="product-description">
-          <h2>Description</h2>
-          <p>{{ product()?.description }}</p>
+          <div class="description-header">
+            <h2>Description</h2>
+            @if (isOwner() && !isEditing()) {
+              <button class="edit-button-small" (click)="startEditing()" title="Edit description">✏️</button>
+            }
+          </div>
+          @if (!isEditing()) {
+            <p>{{ product()?.description }}</p>
+          } @else {
+            <textarea 
+              [(ngModel)]="editedDescription" 
+              class="edit-description-input"
+              placeholder="Product description"
+              rows="4"
+            ></textarea>
+          }
         </div>
 
         <div class="product-actions">
-          <button class="contact-button" (click)="contactSeller()">
-            Contact Seller
-          </button>
+          @if (isEditing()) {
+            <div class="edit-actions">
+              <button 
+                class="save-button" 
+                (click)="saveChanges()" 
+                [disabled]="updateProgress || !editedName().trim() || !editedDescription().trim()"
+              >
+                {{ updateProgress ? 'Saving...' : 'Save Changes' }}
+              </button>
+              <button 
+                class="cancel-button" 
+                (click)="cancelEditing()" 
+                [disabled]="updateProgress"
+              >
+                Cancel
+              </button>
+            </div>
+          } @else {
+            <button class="contact-button" (click)="contactSeller()">
+              Contact Seller
+            </button>
+          }
+          
+          @if (updateMessage) {
+            <div class="update-message" [class.error]="updateMessage.includes('Failed')">
+              {{ updateMessage }}
+            </div>
+          }
         </div>
       </div>
     </div>

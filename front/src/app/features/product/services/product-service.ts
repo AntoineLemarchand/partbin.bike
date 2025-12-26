@@ -8,6 +8,11 @@ export interface CreateProductRequest {
   categoryId: number;
 }
 
+export interface UpdateProductRequest {
+  name: string;
+  description: string;
+}
+
 export interface Category {
   id: number;
   name: string;
@@ -76,5 +81,9 @@ export class ProductService {
 
   deleteImage(productId: number, imagePath: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${productId}/images?imagePath=${encodeURIComponent(imagePath)}`, {withCredentials: true});
+  }
+
+  updateProduct(productId: number, product: UpdateProductRequest): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${productId}`, product, {withCredentials: true});
   }
 }
