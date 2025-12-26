@@ -41,19 +41,8 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		String[] publicRoutes = {
-			"/auth/**",
-			"/doc",
-			"/swagger-ui/**",
-			"/v3/api-docs/**",
-			"/uploads/**"
-		};
-
 		return http
 			.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(auth ->
-					auth.requestMatchers(publicRoutes).permitAll()
-					.anyRequest().authenticated())
 			.sessionManagement(session -> session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 					)
